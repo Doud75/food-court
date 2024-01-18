@@ -5,9 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="df007f0a-3b63-4234-b14f-bf9bf5eeb71f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/app/controller/handler.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/controller/user_handler.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/facade/user.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/main.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/store/store.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/store/user_store.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/food-court.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/app/go.mod" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,14 +25,17 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Go File" />
         <option value="Dockerfile" />
+        <option value="Go File" />
       </list>
     </option>
   </component>
-  <component name="GOROOT" url="file://$USER_HOME$/.local/bin/go" />
+  <component name="GOROOT" url="file:///opt/homebrew/Cellar/go/1.21.6/libexec" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
@@ -50,11 +61,11 @@
     "git-widget-placeholder": "docker",
     "go.import.settings.migrated": "true",
     "go.sdk.automatically.set": "true",
-    "last_opened_file_path": "/home/dimitri",
+    "last_opened_file_path": "/Users/adrienquimbre",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors"
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
 }]]></component>
   <component name="RecentsManager">
