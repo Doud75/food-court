@@ -9,8 +9,8 @@ func (h *Handler) ShowUser() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("Content-Type", "application/json")
 
-		todos, _ := h.Store.GetUser()
-		err := json.NewEncoder(writer).Encode(todos)
+		users, _ := h.Store.GetUser()
+		err := json.NewEncoder(writer).Encode(users)
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return
