@@ -13,14 +13,9 @@ services:
       POSTGRES_PASSWORD: password
     volumes:
       - ./database/dump.sql:/docker-entrypoint-initdb.d/dump.sql
-    networks:
-      - food_network
 
   adminer:
     image: adminer
     restart: always
     ports:
       - "8282:8080"
-
-networks:
-  food_network:
