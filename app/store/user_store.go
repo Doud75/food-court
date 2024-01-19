@@ -42,13 +42,4 @@ func (u *UserStore) GetUser() ([]facade.UserItem, error) {
 	}
 
 	return users, nil
-
-	/*	// ceci est le retour d'une requete sql
-		users := []facade.UserItem{facade.UserItem{
-			ID:       10,
-			Email:    "email@mail.fr",
-			Password: "pass",
-			Role:     "admin",
-		}}
-		return users, nil*/
 }
