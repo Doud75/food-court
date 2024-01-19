@@ -11,4 +11,5 @@ type UserItem struct {
 
 type UserStoreInterface interface {
 	GetUser() ([]UserItem, error)
+	GetUserByMail(string) (UserItem, error)
 }

@@ -13,9 +13,10 @@ func NewHandler(store *store.Store) *Handler {
 	}
 
 	handler.Use(middleware.Logger)
-
+	/*User*/
 	handler.Get("/", handler.ShowUser())
-
+	handler.Post("/login", handler.Login())
+	/*Restaurant*/
 	handler.Get("/restaurants", handler.GetRestaurant())
 
 	return handler

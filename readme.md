@@ -1,3 +1,7 @@
+# .env i de toi envie de rien
+Créer un fichier .env et coller cette clè :<br>
+`JWT_KEY='CestUneCleSecreteTresSecrete'`
+
 # Run docker Run
 À la racine du projet :<br>
 `make start`<br>
