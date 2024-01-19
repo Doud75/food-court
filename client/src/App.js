@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Restaurants from "./pages/restaurants";
-import Menus from "./pages/menus";
-import Orders from "./pages/orders";
-import Connexion from "./pages/connexion";
+import Restaurants from "./pages/Restaurants";
+import Menus from "./pages/Menus";
+import Orders from "./pages/Orders";
+import Connexion from "./pages/Connexion";
 import "./index.css";
 
 function App() {
