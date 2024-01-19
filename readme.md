@@ -9,3 +9,11 @@ Dans le dossier app :
 
 # Adminer
 `localhost:8282`
+
+Info de connexion:
+
+- System: PostgreSQL
+- Server: db
+- Username: user
+- Password: password
+- Database: FOOD
