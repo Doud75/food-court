@@ -16,5 +16,11 @@ services:
     networks:
       - food_network
 
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8282:8080"
+
 networks:
   food_network:
