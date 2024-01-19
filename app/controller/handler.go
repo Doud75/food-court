@@ -16,6 +16,8 @@ func NewHandler(store *store.Store) *Handler {
 
 	handler.Get("/", handler.ShowUser())
 
+	handler.Get("/restaurants", handler.GetRestaurant())
+
 	return handler
 }
 
