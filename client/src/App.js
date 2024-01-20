@@ -5,6 +5,9 @@ import Restaurants from "./pages/Restaurants";
 import Menus from "./pages/Menus";
 import Orders from "./pages/Orders";
 import Connexion from "./pages/Connexion";
+import Admin from "./pages/Admin";
+import CreateRestaurant from "./pages/CreateRestaurant";
+
 import "./index.css";
 
 function App() {
@@ -19,6 +22,8 @@ function App() {
             <Route path="/Restaurants/Menus" element={<Menus />} />
             <Route path="/Orders" element={<Orders />} />
             <Route path="/Connexion" element={<Connexion />} />
+            <Route path="/Admin" element={<Admin />} />
+            <Route path="/CreateRestaurant" element={<CreateRestaurant />} />
           </Routes>
         </BrowserRouter>
       </ChakraProvider>
