@@ -4,7 +4,9 @@ import (
 	"database/sql"
 	"fmt"
 	"food_court/facade"
+	"github.com/google/uuid"
 )
+
 
 func NewRestaurantStore(db *sql.DB) *RestaurantStore {
 	return &RestaurantStore{
@@ -42,4 +44,21 @@ func (r *RestaurantStore) GetRestaurant() ([]facade.RestaurantItem, error) {
 	}
 
 	return restaurants, nil
+}
+
+
+func (r *RestaurantStore) CreateRestaurant(newRestaurant facade.RestaurantItem) (uuid.UUID, error) {
+    restaurantID := uuid.New()
+
+    _, err := r.Exec(`
+        INSERT INTO "restaurant" ("id", "password", "name", "category")
+        VALUES ($1, $2, $3, $4)`,
+        restaurantID, newRestaurant.Password, newRestaurant.Name, newRestaurant.Category)
+
+    if err != nil {
+        fmt.Println(err)
+        return uuid.Nil, err
+    }
+
+    return restaurantID, nil
 }
