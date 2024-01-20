@@ -1,16 +1,16 @@
 -- Insertion dans la table "user"
 INSERT INTO "user" ("id", "email", "password", "role")
 VALUES
-    ('1a6c23e7-4c5e-4a2d-b038-8a7f9f2e15a1', 'user1@example.com', 'password1', 'customer'),
-    ('2b7d34f8-3a1c-4f9e-8c2b-9d6e5f4c2b2a', 'user2@example.com', 'password2', 'customer'),
-    ('3c8e45d9-2b9d-4c8a-a1b3-5e6f7d8c9e3a', 'user3@example.com', 'password3', 'admin');
+    ('1a6c23e7-4c5e-4a2d-b038-8a7f9f2e15a1', 'user1@example.com', '$2a$14$Xu.XQOjOUTlPS7iHtRUqTO/ba7qdU5kzL/9Hyxz61u1q7GUmEKFIa', 'customer'),
+    ('2b7d34f8-3a1c-4f9e-8c2b-9d6e5f4c2b2a', 'user2@example.com', '$2a$14$Xu.XQOjOUTlPS7iHtRUqTO/ba7qdU5kzL/9Hyxz61u1q7GUmEKFIa', 'customer'),
+    ('3c8e45d9-2b9d-4c8a-a1b3-5e6f7d8c9e3a', 'user3@example.com', '$2a$14$Xu.XQOjOUTlPS7iHtRUqTO/ba7qdU5kzL/9Hyxz61u1q7GUmEKFIa', 'admin');
 
 -- Insertion dans la table "restaurant"
 INSERT INTO "restaurant" ("id", "password", "name", "category")
 VALUES
-    ('4d9e61c0-5e8a-4b1f-9c8d-2a3b4c5d6e7f', 'rest1pass', 'Restaurant1', 'Italian'),
-    ('5e7f3d2c-1b4a-5d6e-8f9c-3a2b1f4c5d6e', 'rest2pass', 'Restaurant2', 'Chinese'),
-    ('6e8f9d2c-3a4b-5e6f-1c8d-2b1f4c5d6e7f', 'rest3pass', 'Restaurant3', 'Mexican');
+    ('4d9e61c0-5e8a-4b1f-9c8d-2a3b4c5d6e7f', '$2a$14$Xu.XQOjOUTlPS7iHtRUqTO/ba7qdU5kzL/9Hyxz61u1q7GUmEKFIa', 'Restaurant1', 'Italian'),
+    ('5e7f3d2c-1b4a-5d6e-8f9c-3a2b1f4c5d6e', '$2a$14$Xu.XQOjOUTlPS7iHtRUqTO/ba7qdU5kzL/9Hyxz61u1q7GUmEKFIa', 'Restaurant2', 'Chinese'),
+    ('6e8f9d2c-3a4b-5e6f-1c8d-2b1f4c5d6e7f', '$2a$14$Xu.XQOjOUTlPS7iHtRUqTO/ba7qdU5kzL/9Hyxz61u1q7GUmEKFIa', 'Restaurant3', 'Mexican');
 
 -- Insertion dans la table "menu"
 INSERT INTO "menu" ("id", "dishes", "price", "restaurant_id")
