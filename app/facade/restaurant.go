@@ -11,4 +11,7 @@ type RestaurantItem struct {
 
 type RestaurantStoreInterface interface {
 	GetRestaurant() ([]RestaurantItem, error)
+	CreateRestaurant(RestaurantItem) (uuid.UUID, error) 
 }
+
+
