@@ -2,6 +2,7 @@ package store
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"food_court/facade"
 )
@@ -42,4 +43,19 @@ func (u *UserStore) GetUser() ([]facade.UserItem, error) {
 	}
 
 	return users, nil
+}
+
+func (u *UserStore) GetUserByMail(email string) (facade.UserItem, error) {
+	user := facade.UserItem{}
+
+	if err := u.QueryRow(
+		`SELECT id, email, password, role FROM "user" WHERE email = $1`, email,
+	).Scan(&user.ID, &user.Email, &user.Password, &user.Role); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return facade.UserItem{}, fmt.Errorf("unknow email : %v", email)
+		}
+		return facade.UserItem{}, fmt.Errorf("error : %v", err)
+	}
+
+	return user, nil
 }

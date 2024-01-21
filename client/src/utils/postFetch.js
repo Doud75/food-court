@@ -4,9 +4,15 @@ export async function postFetch(url, data) {
       method: "POST",
       body: JSON.stringify(data),
     });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
     const json = await response.json();
-    return true;
+    return json;
   } catch (error) {
-    return false;
+    console.error("Error during POST request:", error);
+    throw error;
   }
 }
