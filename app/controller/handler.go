@@ -2,6 +2,7 @@ package controller
 
 import (
 	"food_court/store"
+
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/rs/cors"
@@ -26,8 +27,9 @@ func NewHandler(store *store.Store) *Handler {
 	handler.Get("/", handler.ShowUser())
 	handler.Post("/login", handler.Login())
 	/*Restaurant*/
-	handler.Get("/restaurants", handler.GetRestaurant())
+  handler.Get("/restaurants", handler.GetRestaurant())
 	handler.Post("/insert-restaurant", handler.CreateRestaurant())
+	handler.Get("/restaurants/{restaurantID}/menus", handler.GetMenuByRestaurantID())
 
 	return handler
 }
