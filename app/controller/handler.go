@@ -30,6 +30,7 @@ func NewHandler(store *store.Store) *Handler {
   	handler.Get("/restaurants", handler.GetRestaurant())
 	handler.Post("/insert-restaurant", handler.CreateRestaurant())
 	handler.Get("/restaurants/{restaurantID}/menus", handler.GetMenuByRestaurantID())
+	handler.Delete("/delete-restaurant", handler.DeleteRestaurant())
 
 	return handler
 }

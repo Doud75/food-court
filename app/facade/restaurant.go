@@ -9,9 +9,14 @@ type RestaurantItem struct {
 	Category string        `json:"category"`
 }
 
+type RestaurantID struct {
+	ID uuid.NullUUID `json:"id"`
+}
+
 type RestaurantStoreInterface interface {
 	GetRestaurant() ([]RestaurantItem, error)
 	CreateRestaurant(RestaurantItem) (uuid.UUID, error) 
+	DeleteRestaurant(uuid.UUID) error
 }
 
 

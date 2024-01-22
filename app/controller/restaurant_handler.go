@@ -48,3 +48,37 @@ func (h *Handler) CreateRestaurant() http.HandlerFunc {
 		}
 	}
 }
+
+func (h *Handler) DeleteRestaurant() http.HandlerFunc {
+    return func(writer http.ResponseWriter, request *http.Request) {
+        writer.Header().Set("Content-Type", "application/json")
+
+        var requestBody facade.RestaurantID
+
+        err := json.NewDecoder(request.Body).Decode(&requestBody)
+        if err != nil {
+            http.Error(writer, err.Error(), http.StatusBadRequest)
+            return
+        }
+
+        if requestBody.ID.Valid {
+            err = h.Store.DeleteRestaurant(requestBody.ID.UUID)
+            if err != nil {
+                http.Error(writer, err.Error(), http.StatusInternalServerError)
+                return
+            }
+
+            response := map[string]interface{}{
+                "message": "Restaurant deleted successfully",
+            }
+
+            err = json.NewEncoder(writer).Encode(response)
+            if err != nil {
+                http.Error(writer, err.Error(), http.StatusInternalServerError)
+                return
+            }
+        } else {
+            http.Error(writer, "Invalid or missing restaurant ID", http.StatusBadRequest)
+        }
+    }
+}
