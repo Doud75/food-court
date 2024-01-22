@@ -1,8 +1,10 @@
 import React from "react";
 import { Input, InputRightElement, InputGroup, Button } from "@chakra-ui/react";
 import { postFetch } from "../utils/postFetch";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateRestaurant() {
+  const navigate = useNavigate();
   const [show, setShow] = React.useState(false);
   const [restaurantData, setRestaurantData] = React.useState({
     name: "",
@@ -16,18 +18,16 @@ export default function CreateRestaurant() {
     const { name, value } = e.target;
     setRestaurantData((prevData) => ({ ...prevData, [name]: value }));
   };
+  const handleCancel = () => {
+    setRestaurantData({ name: "", category: "", password: "" });
+    navigate("/Admin");
+  };
 
   const handleAddRestaurantClick = async () => {
     try {
       await postFetch("/insert-restaurant", restaurantData);
       console.log("Restaurant added successfully!");
-
-      // Reset the form after adding the restaurant
-      // setRestaurantData({
-      //   name: "",
-      //   category: "",
-      //   password: "",
-      // });
+      navigate("/Admin");
     } catch (error) {
       console.error("Error adding restaurant:", error);
     }
@@ -88,9 +88,7 @@ export default function CreateRestaurant() {
           variant="outline"
           colorScheme="red"
           size="lg"
-          onClick={() =>
-            setRestaurantData({ name: "", category: "", password: "" })
-          }
+          onClick={handleCancel}
         >
           Cancel
         </Button>

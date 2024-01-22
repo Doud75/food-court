@@ -1,14 +1,14 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
 import Restaurants from "./pages/Restaurants";
-import Menus from "./pages/Menus";
+import MenuList from "./pages/MenuList.js";
 import Orders from "./pages/Orders";
 import Login from "./pages/Login";
 import Admin from "./pages/Admin";
 import CreateRestaurant from "./pages/CreateRestaurant";
 
 import "./index.css";
-
+const test = "6e8f9d2c-3a4b-5e6f-1c8d-2b1f4c5d6e7f";
 function App() {
   return (
     <div className="App">
@@ -20,7 +20,7 @@ function App() {
             <Route path="/Restaurants" element={<Restaurants />} />
             <Route
               path="/Restaurants/Menus"
-              element={<MenuList restaurantID={'ici props id_restaurant'} />}
+              element={<MenuList restaurantID={test} />}
             />
             <Route path="/Orders" element={<Orders />} />
             <Route path="/Login" element={<Login />} />
