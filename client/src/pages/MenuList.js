@@ -47,11 +47,9 @@ const MenuList = ({ restaurantID }) => {
                 alt="Green double couch with wooden legs"
                 borderRadius="lg"
               />
-              <Text>
-                <div className="flex justify-between pt-3 px-3">
-                  <span className="text-base font-semibold">{menu.dishes}</span>
-                  <span className="text-base font-bold">{menu.price} €</span>
-                </div>
+              <Text className="flex justify-between pt-3 px-3">
+                <span className="text-base font-semibold">{menu.dishes}</span>
+                <span className="text-base font-bold">{menu.price} €</span>
               </Text>
             </CardBody>
           </Card>
