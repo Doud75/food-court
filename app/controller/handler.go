@@ -15,11 +15,11 @@ func NewHandler(store *store.Store) *Handler {
 	}
 
 	corsOptions := cors.New(cors.Options{
-        AllowedOrigins:   []string{"http://localhost:3000"}, 
-        AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
-        AllowedHeaders:   []string{"Content-Type"},
-        AllowCredentials: true,
-    })
+		AllowedOrigins:   []string{"http://localhost:3000"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
+		AllowedHeaders:   []string{"Content-Type"},
+		AllowCredentials: true,
+	})
 
 	handler.Use(corsOptions.Handler)
 	handler.Use(middleware.Logger)
@@ -27,10 +27,11 @@ func NewHandler(store *store.Store) *Handler {
 	handler.Get("/", handler.ShowUser())
 	handler.Post("/login", handler.Login())
 	/*Restaurant*/
-  	handler.Get("/restaurants", handler.GetRestaurant())
+	handler.Get("/restaurants", handler.GetRestaurant())
 	handler.Post("/insert-restaurant", handler.CreateRestaurant())
 	handler.Get("/restaurants/{restaurantID}/menus", handler.GetMenuByRestaurantID())
 	handler.Delete("/delete-restaurant", handler.DeleteRestaurant())
+	handler.Delete("/restaurants/{restaurantID}/delete-dishes/{dishesID}", handler.RemoveDishesByID())
 
 	return handler
 }
