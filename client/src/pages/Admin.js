@@ -1,7 +1,13 @@
 import React from "react";
-import { Button } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
+import {
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  Button,
+} from "@chakra-ui/react";
 import ListRestaurant from "../components/admin/ListRestaurant";
 
 export default function Admin() {
