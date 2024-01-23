@@ -48,9 +48,18 @@ func (r *RestaurantStore) GetRestaurant() ([]facade.RestaurantItem, error) {
 
 
 func (r *RestaurantStore) CreateRestaurant(newRestaurant facade.RestaurantItem) (uuid.UUID, error) {
+    var existingID uuid.UUID
+    err := r.QueryRow(`SELECT id FROM "restaurant" WHERE name = $1`, newRestaurant.Name).Scan(&existingID)
+    if err == nil {
+        return uuid.Nil, fmt.Errorf("The name restaurant '%s' already exist", newRestaurant.Name)
+    } else if err != sql.ErrNoRows {
+        fmt.Println(err)
+        return uuid.Nil, err
+    }
+
     restaurantID := uuid.New()
 
-    _, err := r.Exec(`
+    _, err = r.Exec(`
         INSERT INTO "restaurant" ("id", "password", "name", "category")
         VALUES ($1, $2, $3, $4)`,
         restaurantID, newRestaurant.Password, newRestaurant.Name, newRestaurant.Category)
@@ -61,4 +70,23 @@ func (r *RestaurantStore) CreateRestaurant(newRestaurant facade.RestaurantItem) 
     }
 
     return restaurantID, nil
+}
+
+func (r *RestaurantStore) DeleteRestaurant(restaurantID uuid.UUID) error {
+    var existingID uuid.UUID
+    err := r.QueryRow(`SELECT id FROM "restaurant" WHERE id = $1`, restaurantID).Scan(&existingID)
+    if err == sql.ErrNoRows {
+        return fmt.Errorf("The ID '%s' of the restaurant doesn't exist", restaurantID)
+    } else if err != nil {
+        fmt.Println(err)
+        return err
+    }
+
+    _, err = r.Exec(`DELETE FROM "restaurant" WHERE id = $1`, restaurantID)
+    if err != nil {
+        fmt.Println(err)
+        return err
+    }
+
+    return nil
 }
