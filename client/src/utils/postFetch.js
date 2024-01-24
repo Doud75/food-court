@@ -6,13 +6,15 @@ export async function postFetch(url, data) {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      if (response.status !== 500) {
+        return response.status;
+      }
+      throw new Error(`HTTP Error ${response.status}: ${response.statusText}`);
     }
 
     const json = await response.json();
     return json;
   } catch (error) {
-    console.error("Error during POST request:", error);
     throw error;
   }
 }

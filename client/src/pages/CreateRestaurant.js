@@ -3,6 +3,13 @@ import { Input, InputRightElement, InputGroup, Button } from "@chakra-ui/react";
 import { postFetch } from "../utils/postFetch";
 import { useNavigate } from "react-router-dom";
 
+import {
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+} from "@chakra-ui/react";
+
 export default function CreateRestaurant() {
   const navigate = useNavigate();
   const [show, setShow] = React.useState(false);
@@ -11,6 +18,7 @@ export default function CreateRestaurant() {
     category: "",
     password: "",
   });
+  const [error, setError] = React.useState(null);
 
   const handleClick = () => setShow(!show);
 
@@ -24,12 +32,30 @@ export default function CreateRestaurant() {
   };
 
   const handleAddRestaurantClick = async () => {
+    if (
+      !restaurantData.name ||
+      !restaurantData.category ||
+      !restaurantData.password
+    ) {
+      setError("Please fill out all the fields");
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
+      return;
+    }
+
     try {
-      await postFetch("/insert-restaurant", restaurantData);
-      console.log("Restaurant added successfully!");
-      navigate("/Admin");
+      const test = await postFetch("/insert-restaurant", restaurantData);
+      if (test === 409) {
+        setError("The name restaurant already exist");
+        setTimeout(() => {
+          setError(null);
+        }, 5000);
+      } else {
+        navigate("/Admin");
+      }
     } catch (error) {
-      console.error("Error adding restaurant:", error);
+      console.log(error);
     }
   };
 
@@ -93,6 +119,13 @@ export default function CreateRestaurant() {
           Cancel
         </Button>
       </div>
+      {error && (
+        <Alert status="error" className="mt-12">
+          <AlertIcon />
+          <AlertTitle>Error :</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
     </div>
   );
 }
