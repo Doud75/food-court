@@ -32,6 +32,7 @@ func (h *Handler) CreateRestaurant() http.HandlerFunc {
 
 		restaurantID, err := h.Store.CreateRestaurant(newRestaurant)
 		if err != nil {
+			writer.WriteHeader(409)
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return
 		}
