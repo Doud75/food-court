@@ -13,7 +13,7 @@ stop:
 prune:
 	docker volume prune
 
-db: start
+db:
 	${EXEC} -ti ${DB_NAME} psql -U user -d FOOD -w
 
 truncate:

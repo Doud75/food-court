@@ -9,7 +9,8 @@ CREATE TABLE "restaurant"(
     "id" UUID PRIMARY KEY NOT NULL,
     "password" VARCHAR(255) NOT NULL,
     "name" VARCHAR(255) NOT NULL,
-    "category" VARCHAR(255) NOT NULL
+    "category" VARCHAR(255) NOT NULL,
+    "description" VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE "menu"(
@@ -24,6 +25,7 @@ CREATE TABLE "order"(
     "dishes_list" jsonb NOT NULL,
     "total_price" DOUBLE PRECISION NOT NULL,
     "reference" BIGINT NOT NULL,
+    "state" VARCHAR NOT NULL,
     "user_id" UUID NOT NULL,
     "restaurant_id" UUID NOT NULL
 );
