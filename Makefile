@@ -1,14 +1,14 @@
-DOCKER_COMPOSE:=docker-compose
+COMPOSE:=docker-compose
 UP:=up -d --build
 DOWN:=stop
 DB_NAME:=food_db
 EXEC:=docker exec
 
 start:
-	${DOCKER_COMPOSE} ${UP}
+	${COMPOSE} ${UP}
 
 stop:
-	${DOCKER_COMPOSE} ${DOWN}
+	${COMPOSE} ${DOWN}
 
 prune:
 	docker volume prune
