@@ -8,7 +8,6 @@ import Admin from "./pages/Admin";
 import CreateRestaurant from "./pages/CreateRestaurant";
 
 import "./index.css";
-const test = "6e8f9d2c-3a4b-5e6f-1c8d-2b1f4c5d6e7f";
 function App() {
   return (
     <div className="App">
@@ -19,8 +18,8 @@ function App() {
             <Route path="/*" element={<Restaurants />} />
             <Route path="/Restaurants" element={<Restaurants />} />
             <Route
-              path="/Restaurants/Menus"
-              element={<MenuList restaurantID={test} />}
+              path="/Restaurants/:restaurantID/Menus"
+              element={<MenuList />}
             />
             <Route path="/Orders" element={<Orders />} />
             <Route path="/Login" element={<Login />} />

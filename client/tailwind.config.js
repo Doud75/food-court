@@ -2,6 +2,11 @@
 module.exports = {
   content: ["./src/**/*.{html,js}"],
   theme: {
+    extend: {
+      flexGrow: {
+        2: '2'
+      }
+    },
     fontSize: {
       xl: [
         "30px",
