@@ -33,5 +33,15 @@ func (h *Handler) RemoveDishesByID() http.HandlerFunc {
 			http.Error(writer, "Invalid restaurant ID or dishesID", http.StatusBadRequest)
 			return
 		}
+
+		response := map[string]interface{}{
+			"message": "Dishes deleted successfully",
+		}
+
+		err = json.NewEncoder(writer).Encode(response)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
 }

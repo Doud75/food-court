@@ -23,8 +23,8 @@ function App() {
               element={<MenuList />}
             />
             <Route
-              path="/Restaurants/Menus/Handler"
-              element={<MenuHandler restaurantID={test} />}
+              path="/Restaurants/:restaurantID/Menus/Handler"
+              element={<MenuHandler />}
             />
             <Route path="/Orders" element={<Orders />} />
             <Route path="/Login" element={<Login />} />
