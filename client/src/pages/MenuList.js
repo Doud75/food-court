@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { getFetch } from "../utils/getFetch";
 import { Card, CardBody, Text, Image, Button } from "@chakra-ui/react";
+import { useParams } from "react-router-dom";
 
-const MenuList = ({ restaurantID }) => {
+const MenuList = () => {
   const [menus, setMenus] = useState([]);
+  const { restaurantID } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
