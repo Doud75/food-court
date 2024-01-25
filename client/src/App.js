@@ -5,6 +5,7 @@ import MenuList from "./pages/MenuList.js";
 import Orders from "./pages/Orders";
 import Login from "./pages/Login";
 import Admin from "./pages/Admin";
+import MenuHandler from "./pages/MenuHandler";
 import CreateRestaurant from "./pages/CreateRestaurant";
 
 import "./index.css";
@@ -20,6 +21,10 @@ function App() {
             <Route
               path="/Restaurants/:restaurantID/Menus"
               element={<MenuList />}
+            />
+            <Route
+              path="/Restaurants/Menus/Handler"
+              element={<MenuHandler restaurantID={test} />}
             />
             <Route path="/Orders" element={<Orders />} />
             <Route path="/Login" element={<Login />} />
