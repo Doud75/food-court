@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { getFetch } from "../utils/getFetch";
 import { Card, CardBody, Text, Image, Button } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
@@ -41,21 +41,25 @@ const MenuList = () => {
         </Button>
       </nav>
       <div className="p-8">
-        {menus.map((menu) => (
-          <Card key={menu.id} className="mb-5">
-            <CardBody>
-              <Image
-                src="https://source.unsplash.com/bol-de-salades-de-legumes-IGfIGP5ONV0"
-                alt="Green double couch with wooden legs"
-                borderRadius="lg"
-              />
-              <Text className="flex justify-between pt-3 px-3">
-                <span className="text-base font-semibold">{menu.dishes}</span>
-                <span className="text-base font-bold">{menu.price} €</span>
-              </Text>
-            </CardBody>
-          </Card>
-        ))}
+        {menus && menus.length > 0 ? (
+          menus.map((menu) => (
+            <Card key={menu.id} className="mb-5">
+              <CardBody>
+                <Image
+                  src="https://source.unsplash.com/bol-de-salades-de-legumes-IGfIGP5ONV0"
+                  alt="Green double couch with wooden legs"
+                  borderRadius="lg"
+                />
+                <Text className="flex justify-between pt-3 px-3">
+                  <span className="text-base font-semibold">{menu.dishes}</span>
+                  <span className="text-base font-bold">{menu.price} €</span>
+                </Text>
+              </CardBody>
+            </Card>
+          ))
+        ) : (
+          <span>No menu available</span>
+        )}
       </div>
     </>
   );
