@@ -2,8 +2,10 @@ package store
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"food_court/facade"
+	"github.com/google/uuid"
 )
 
 func NewMenuStore(db *sql.DB) *MenuStore {
@@ -16,11 +18,11 @@ type MenuStore struct {
 	*sql.DB
 }
 
-func (r *MenuStore) GetMenuByRestaurantID(restaurantID string) ([]facade.MenuItem, error) {
+func (m *MenuStore) GetMenuByRestaurantID(restaurantID string) ([]facade.MenuItem, error) {
 	var menus []facade.MenuItem
 
 	query := `SELECT id, dishes, price, restaurant_id FROM "menu" WHERE restaurant_id = $1`
-	rows, err := r.Query(query, restaurantID)
+	rows, err := m.Query(query, restaurantID)
 	if err != nil {
 		fmt.Println(err)
 		return nil, err
@@ -42,4 +44,24 @@ func (r *MenuStore) GetMenuByRestaurantID(restaurantID string) ([]facade.MenuIte
 	}
 
 	return menus, nil
+}
+
+func (m *MenuStore) RemoveDishesByID(restaurantID string, dishesID string) error {
+	var existingID uuid.NullUUID
+	if err := m.QueryRow(`SELECT id FROM "menu" WHERE restaurant_id = $1 AND id = $2`, restaurantID, dishesID).
+		Scan(&existingID); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return fmt.Errorf("remove dishes by ID: %w", err)
+		}
+
+		fmt.Println(err)
+		return err
+	}
+
+	if _, err := m.Exec(`DELETE FROM "menu" WHERE restaurant_id = $1 AND id = $2`, restaurantID, dishesID); err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	return nil
 }
