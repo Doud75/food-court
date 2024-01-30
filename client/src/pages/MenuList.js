@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { getFetch } from "../utils/getFetch";
-import { Card, CardBody, Text, Image, Button } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-import CardComponent from '../components/ui/CardComponent'
+import CardComponent from "../components/ui/CardComponent";
 
 const MenuList = () => {
   const [menus, setMenus] = useState([]);
@@ -43,10 +43,12 @@ const MenuList = () => {
       </nav>
       <div className="p-8">
         {menus.map((menu) => (
-          <CardComponent 
-            key={menu.id} 
-            name={menu.dishes} 
-            description={"Lorem ta maman aime le chocolats mais aussi les grosses gauffre au sucre"}
+          <CardComponent
+            key={menu.id}
+            name={menu.dishes}
+            description={
+              "Lorem ta maman aime le chocolats mais aussi les grosses gauffre au sucre"
+            }
             price={menu.price}
           />
         ))}
