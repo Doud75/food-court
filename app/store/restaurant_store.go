@@ -81,18 +81,6 @@ func (r *RestaurantStore) DeleteRestaurant(restaurantID uuid.UUID) error {
 		return err
 	}
 
-	// _, deleteOrderErr := r.Exec(`DELETE FROM "order" WHERE restaurant_id = $1`, restaurantID)
-    // if deleteOrderErr != nil {
-    //     fmt.Printf("Error deleting order items: %v", deleteOrderErr)
-    //     return deleteOrderErr
-    // }
-
-    // _, deleteMenuErr := r.Exec(`DELETE FROM "menu" WHERE restaurant_id = $1`, restaurantID)
-    // if deleteMenuErr != nil {
-    //     fmt.Printf("Error deleting menu items: %v", deleteMenuErr)
-    //     return deleteMenuErr
-    // }
-
 	_, err = r.Exec(`DELETE FROM "restaurant" WHERE id = $1`, restaurantID)
 	if err != nil {
 		fmt.Println(err)
