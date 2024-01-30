@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { getFetch } from "../utils/getFetch";
-import {Card, CardBody, Text, Image, Button, Flex} from "@chakra-ui/react";
+import {Card, CardBody, Text, Button, Flex} from "@chakra-ui/react";
 import {useParams} from "react-router-dom";
 import {deleteFetch} from "../utils/deleteFetch";
 
@@ -64,32 +64,36 @@ const MenuList = () => {
                 </Button>
             </nav>
             <div className="p-8">
-                {menus.map((menu) => (
-                    <Card key={menu.id} className="mb-5">
-                        {popup && (
-                            <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
-                                <div className="bg-white p-8 rounded w-3/4 flex flex-col">
-                                    <p>Êtes-vous sûr de vouloir supprimer ce plat : <strong className="font-bold">{selectedMenu.dishes}</strong> ?
-                                    </p>
-                                    <div className="flex justify-end mt-4 mx-auto ">
-                                        <Button colorScheme="teal" onClick={() => deleteDishes(selectedMenu.id)}>Valider</Button>
-                                        <Button colorScheme="red" ml={5} onClick={handlePopup}>Annuler</Button>
-                                    </div>
-                                </div>
+                {menus && menus.length > 0 ? (
+                    menus.map((menu) => (
+                        <Card key={menu.id} className="mb-5">
+                            <CardBody>
+                                <Text className="flex justify-between pt-3 px-3">
+                                    <span className="text-base font-semibold">{menu.dishes}</span>
+                                    <span className="text-base font-bold">{menu.price} €</span>
+                                </Text>
+                                <Flex justifyContent="space-between" className="px-3 pt-3">
+                                    <Button colorScheme="teal">Modifier</Button>
+                                    <Button colorScheme="red" onClick={() => handlePopup(menu)}>Supprimer</Button>
+                                </Flex>
+                            </CardBody>
+                        </Card>
+                    ))
+                ) : (
+                    <p>Aucun menu disponible.</p>
+                )}
+                {popup && (
+                    <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
+                        <div className="bg-white p-8 rounded w-3/4 flex flex-col">
+                            <p>Êtes-vous sûr de vouloir supprimer ce plat : <strong className="font-bold">{selectedMenu.dishes}</strong> ?
+                            </p>
+                            <div className="flex justify-end mt-4 mx-auto ">
+                                <Button colorScheme="teal" onClick={() => deleteDishes(selectedMenu.id)}>Valider</Button>
+                                <Button colorScheme="red" ml={5} onClick={handlePopup}>Annuler</Button>
                             </div>
-                        )}
-                        <CardBody>
-                            <Text className="flex justify-between pt-3 px-3">
-                                <span className="text-base font-semibold">{menu.dishes}</span>
-                                <span className="text-base font-bold">{menu.price} €</span>
-                            </Text>
-                            <Flex justifyContent="space-between" className="px-3 pt-3">
-                                <Button colorScheme="teal">Modifier</Button>
-                                <Button colorScheme="red" onClick={() => handlePopup(menu)}>Supprimer</Button>
-                            </Flex>
-                        </CardBody>
-                    </Card>
-                ))}
+                        </div>
+                    </div>
+                )}
             </div>
         </>
     );
