@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import { Input, InputRightElement, InputGroup, Button } from "@chakra-ui/react";
 import { postFetch } from "../utils/postFetch";
 import { useNavigate } from "react-router-dom";
@@ -12,13 +12,13 @@ import {
 
 export default function CreateRestaurant() {
   const navigate = useNavigate();
-  const [show, setShow] = React.useState(false);
-  const [restaurantData, setRestaurantData] = React.useState({
+  const [show, setShow] = useState(false);
+  const [restaurantData, setRestaurantData] = useState({
     name: "",
     category: "",
     password: "",
   });
-  const [error, setError] = React.useState(null);
+  const [error, setError] = useState(null);
 
   const handleClick = () => setShow(!show);
 
