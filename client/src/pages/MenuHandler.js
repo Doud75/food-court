@@ -116,7 +116,7 @@ const MenuList = () => {
             width="100%"
             onClick={handleAddMenuClick}
           >
-            Add Restaurant
+            Add Menu
           </Button>
         </div>
       </div>
