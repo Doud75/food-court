@@ -65,3 +65,33 @@ func (m *MenuStore) RemoveDishesByID(restaurantID string, dishesID string) error
 
 	return nil
 }
+
+
+func (m *MenuStore) AddMenu(menu facade.MenuItem) (uuid.UUID, error) {
+	var existingMenuID uuid.UUID
+	err := m.QueryRow(`SELECT id FROM "menu" WHERE dishes = $1 AND restaurant_id = $2`, menu.Dishes, menu.RestaurantID).
+		Scan(&existingMenuID)
+	if err == nil {
+		return uuid.Nil, errors.New("Menu name already exists")
+	} else if err != sql.ErrNoRows {
+		fmt.Println(err)
+		return uuid.Nil, err
+	}
+	
+	menuID := uuid.New()
+
+	query := `
+		INSERT INTO "menu" (id, dishes, price, restaurant_id)
+		VALUES ($1, $2, $3, $4)
+		RETURNING id
+	`
+
+	err = m.QueryRow(query, menuID, menu.Dishes, menu.Price, menu.RestaurantID).
+		Scan(&menuID)
+	if err != nil {
+		fmt.Println(err)
+		return uuid.Nil, err
+	}
+
+	return menuID, nil
+}

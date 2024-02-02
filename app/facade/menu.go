@@ -12,4 +12,5 @@ type MenuItem struct {
 type MenuStoreInterface interface {
 	GetMenuByRestaurantID(restaurantID string) ([]MenuItem, error)
 	RemoveDishesByID(restaurantID string, dishesID string) error
+	AddMenu(MenuItem)(uuid.UUID, error)
 }

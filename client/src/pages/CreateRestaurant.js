@@ -45,8 +45,8 @@ export default function CreateRestaurant() {
     }
 
     try {
-      const test = await postFetch("/insert-restaurant", restaurantData);
-      if (test === 409) {
+      const reponse = await postFetch("/insert-restaurant", restaurantData);
+      if (reponse === 409) {
         setError("The name restaurant already exist");
         setTimeout(() => {
           setError(null);

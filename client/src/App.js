@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Admin from "./pages/Admin";
 import MenuHandler from "./pages/MenuHandler";
 import CreateRestaurant from "./pages/CreateRestaurant";
+import CreateMenu from "./pages/CreateMenu.js";
 
 import "./index.css";
 function App() {
@@ -25,6 +26,10 @@ function App() {
             <Route
               path="/Restaurants/:restaurantID/Menus/Handler"
               element={<MenuHandler />}
+            />
+            <Route
+              path="/Restaurants/:restaurantID/Menus/Handler/CreateMenu"
+              element={<CreateMenu />}
             />
             <Route path="/Orders" element={<Orders />} />
             <Route path="/Login" element={<Login />} />
