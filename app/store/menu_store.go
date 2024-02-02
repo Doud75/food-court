@@ -66,6 +66,25 @@ func (m *MenuStore) RemoveDishesByID(restaurantID string, dishesID string) error
 	return nil
 }
 
+func (m *MenuStore) ModifyDishes(restaurantID string, dishesID string, menu facade.MenuItem) error {
+	var existingID uuid.NullUUID
+	if err := m.QueryRow(`SELECT id FROM "menu" WHERE restaurant_id = $1 AND id = $2`, restaurantID, dishesID).
+		Scan(&existingID); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return fmt.Errorf("modify dishes: %w", err)
+		}
+
+		fmt.Println(err)
+		return err
+	}
+
+	if _, err := m.Exec(`UPDATE "menu" SET dishes = $1, price = $2 WHERE id = $3`, menu.Dishes, menu.Price, dishesID); err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	return nil
+}
 
 func (m *MenuStore) AddMenu(menu facade.MenuItem) (uuid.UUID, error) {
 	var existingMenuID uuid.UUID
@@ -77,7 +96,7 @@ func (m *MenuStore) AddMenu(menu facade.MenuItem) (uuid.UUID, error) {
 		fmt.Println(err)
 		return uuid.Nil, err
 	}
-	
+
 	menuID := uuid.New()
 
 	query := `

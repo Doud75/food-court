@@ -14,7 +14,7 @@ export default function CreateMenu() {
   const { restaurantID } = useParams();
   const [menuData, setMenuData] = useState({
     dishes: "",
-    price: 0.0,
+    price: "",
     restaurant_id: restaurantID,
   });
   const [error, setError] = useState(null);
@@ -72,8 +72,6 @@ export default function CreateMenu() {
             variant="outline"
             placeholder="Enter price"
             name="price"
-            type="number"
-            step="0.01"
             pattern="[0-9]+([.][0-9]+)?"
             value={menuData.price}
             onChange={handleInputChange}
@@ -87,7 +85,7 @@ export default function CreateMenu() {
           size="lg"
           onClick={handleAddMenuClick}
         >
-          Add Restaurant
+          Add Menu
         </Button>
         <Button
           variant="outline"
