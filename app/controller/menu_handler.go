@@ -2,9 +2,9 @@ package controller
 
 import (
 	"encoding/json"
-	"net/http"
 	"food_court/facade"
 	"github.com/go-chi/chi"
+	"net/http"
 )
 
 func (h *Handler) GetMenuByRestaurantID() http.HandlerFunc {
@@ -46,6 +46,36 @@ func (h *Handler) RemoveDishesByID() http.HandlerFunc {
 	}
 }
 
+func (h *Handler) ModifyDishes() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		writer.Header().Set("Content-Type", "application/json")
+		var menu facade.MenuItem
+
+		dishesID := chi.URLParam(request, "dishesID")
+		restaurantID := chi.URLParam(request, "restaurantID")
+		err := json.NewDecoder(request.Body).Decode(&menu)
+		if err != nil {
+			http.Error(writer, "Invalid request body", http.StatusBadRequest)
+			return
+		}
+
+		err = h.Store.ModifyDishes(restaurantID, dishesID, menu)
+		if err != nil {
+			http.Error(writer, "Invalid restaurant ID or dishesID", http.StatusBadRequest)
+			return
+		}
+
+		response := map[string]interface{}{
+			"message": "Dishes modify successfully",
+		}
+
+		err = json.NewEncoder(writer).Encode(response)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+}
 
 func (h *Handler) AddMenu() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
@@ -66,7 +96,7 @@ func (h *Handler) AddMenu() http.HandlerFunc {
 		}
 
 		response := map[string]interface{}{
-			"menuID": menuID,
+			"menuID":  menuID,
 			"message": "Menu added successfully",
 		}
 

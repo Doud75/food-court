@@ -14,7 +14,7 @@ export default function CreateMenu() {
   const { restaurantID } = useParams();
   const [menuData, setMenuData] = useState({
     dishes: "",
-    price: 0.0,
+    price: "",
     restaurant_id: restaurantID,
   });
   const [error, setError] = useState(null);
@@ -24,7 +24,7 @@ export default function CreateMenu() {
     setMenuData((prevData) => ({ ...prevData, [name]: value }));
   };
   const handleCancel = () => {
-    setMenuData({ dishes: "", price: 0.0, restaurant_id: "" });
+    setMenuData({ dishes: "", price: "", restaurant_id: "" });
     navigate(`/Restaurants/${restaurantID}/Menus/Handler`);
   };
 
@@ -87,7 +87,7 @@ export default function CreateMenu() {
           size="lg"
           onClick={handleAddMenuClick}
         >
-          Add Restaurant
+          Add Menu
         </Button>
         <Button
           variant="outline"

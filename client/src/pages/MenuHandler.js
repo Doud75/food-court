@@ -1,14 +1,20 @@
 import { useState, useEffect } from "react";
 import { getFetch } from "../utils/getFetch";
-import { Card, CardBody, Text, Button, Flex } from "@chakra-ui/react";
+import { Card, CardBody, Text, Button, Flex, Input } from "@chakra-ui/react";
 import { useParams, useNavigate } from "react-router-dom";
 import { deleteFetch } from "../utils/deleteFetch";
+import { postFetch } from "../utils/postFetch";
 
 const MenuList = () => {
   const { restaurantID } = useParams();
   const [menus, setMenus] = useState([]);
-  const [popup, setPopup] = useState(false);
+  const [popupDelete, setPopupDelete] = useState(false);
+  const [popupModify, setPopupModify] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState([]);
+  const [menuModifyData, setMenuModifyData] = useState({
+    dishes: "",
+    price: "",
+  });
   const navigate = useNavigate();
 
   const handleAddMenuClick = () => {
@@ -28,8 +34,15 @@ const MenuList = () => {
     fetchData();
   }, [restaurantID]);
 
-  function handlePopup(menu = []) {
-    setPopup(!popup);
+  function handlePopupDelete(menu = []) {
+    setPopupDelete(!popupDelete);
+    if (menu.id) {
+      setSelectedMenu(menu);
+    }
+  }
+
+  function handlePopupModify(menu = []) {
+    setPopupModify(!popupModify);
     if (menu.id) {
       setSelectedMenu(menu);
     }
@@ -40,7 +53,37 @@ const MenuList = () => {
       await deleteFetch(`/restaurants/${restaurantID}/delete-dishes/${menuID}`);
 
       setMenus((prevMenus) => prevMenus.filter((menu) => menu.id !== menuID));
-      handlePopup();
+      setSelectedMenu([]);
+      handlePopupDelete();
+    } catch (error) {
+      console.error("Error deleting restaurant:", error);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setMenuModifyData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const modifyDishes = async (menuID) => {
+    try {
+      const response = await postFetch(
+        `/restaurants/${restaurantID}/modify-dishes/${menuID}`,
+        menuModifyData
+      );
+      if (
+        response.message &&
+        response.message === "Dishes modify successfully"
+      ) {
+        menuModifyData.id = menuID;
+        setMenus((prevState) =>
+          prevState.map((menu) => (menu.id === menuID ? menuModifyData : menu))
+        );
+      }
+
+      setSelectedMenu([]);
+      setMenuModifyData({ dishes: "", price: "" });
+      handlePopupModify();
     } catch (error) {
       console.error("Error deleting restaurant:", error);
     }
@@ -76,8 +119,16 @@ const MenuList = () => {
                   <span className="text-base font-bold">{menu.price} €</span>
                 </Text>
                 <Flex justifyContent="space-between" className="px-3 pt-3">
-                  <Button colorScheme="teal">Modifier</Button>
-                  <Button colorScheme="red" onClick={() => handlePopup(menu)}>
+                  <Button
+                    colorScheme="teal"
+                    onClick={() => handlePopupModify(menu)}
+                  >
+                    Modifier
+                  </Button>
+                  <Button
+                    colorScheme="red"
+                    onClick={() => handlePopupDelete(menu)}
+                  >
                     Supprimer
                   </Button>
                 </Flex>
@@ -87,7 +138,7 @@ const MenuList = () => {
         ) : (
           <p>Aucun menu disponible.</p>
         )}
-        {popup && (
+        {popupDelete && (
           <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
             <div className="bg-white p-8 rounded w-3/4 flex flex-col">
               <p>
@@ -101,7 +152,47 @@ const MenuList = () => {
                 >
                   Valider
                 </Button>
-                <Button colorScheme="red" ml={5} onClick={handlePopup}>
+                <Button colorScheme="red" ml={5} onClick={handlePopupDelete}>
+                  Annuler
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+        {popupModify && (
+          <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
+            <div className="bg-white p-8 rounded w-3/4 flex flex-col">
+              <div>
+                <span>Dishes name</span>
+                <Input
+                  variant="outline"
+                  placeholder="Dishes name"
+                  name="dishes"
+                  value={menuModifyData.dishes}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div>
+                <span>Price</span>
+                <Input
+                  variant="outline"
+                  placeholder="Price"
+                  name="price"
+                  type="number"
+                  step="0.01"
+                  pattern="[0-9]+([.][0-9]+)?"
+                  value={menuModifyData.price}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="flex justify-end mt-4 mx-auto ">
+                <Button
+                  colorScheme="teal"
+                  onClick={() => modifyDishes(selectedMenu.id)}
+                >
+                  Valider
+                </Button>
+                <Button colorScheme="red" ml={5} onClick={handlePopupModify}>
                   Annuler
                 </Button>
               </div>
