@@ -24,7 +24,7 @@ export default function CreateMenu() {
     setMenuData((prevData) => ({ ...prevData, [name]: value }));
   };
   const handleCancel = () => {
-    setMenuData({ dishes: "", price: 0.0, restaurant_id: "" });
+    setMenuData({ dishes: "", price: "", restaurant_id: "" });
     navigate(`/Restaurants/${restaurantID}/Menus/Handler`);
   };
 
@@ -72,6 +72,8 @@ export default function CreateMenu() {
             variant="outline"
             placeholder="Enter price"
             name="price"
+            type="number"
+            step="0.01"
             pattern="[0-9]+([.][0-9]+)?"
             value={menuData.price}
             onChange={handleInputChange}

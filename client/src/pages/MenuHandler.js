@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { getFetch } from "../utils/getFetch";
-import {Card, CardBody, Text, Button, Flex, Input} from "@chakra-ui/react";
+import { Card, CardBody, Text, Button, Flex, Input } from "@chakra-ui/react";
 import { useParams, useNavigate } from "react-router-dom";
 import { deleteFetch } from "../utils/deleteFetch";
-import {postFetch} from "../utils/postFetch";
+import { postFetch } from "../utils/postFetch";
 
 const MenuList = () => {
   const { restaurantID } = useParams();
@@ -53,7 +53,7 @@ const MenuList = () => {
       await deleteFetch(`/restaurants/${restaurantID}/delete-dishes/${menuID}`);
 
       setMenus((prevMenus) => prevMenus.filter((menu) => menu.id !== menuID));
-      setSelectedMenu([])
+      setSelectedMenu([]);
       handlePopupDelete();
     } catch (error) {
       console.error("Error deleting restaurant:", error);
@@ -67,14 +67,22 @@ const MenuList = () => {
 
   const modifyDishes = async (menuID) => {
     try {
-      const response = await postFetch(`/restaurants/${restaurantID}/modify-dishes/${menuID}`, menuModifyData);
-      if (response.message && response.message === 'Dishes modify successfully') {
-        menuModifyData.id = menuID
-        setMenus(prevState => prevState.map(menu => menu.id === menuID ? menuModifyData : menu));
+      const response = await postFetch(
+        `/restaurants/${restaurantID}/modify-dishes/${menuID}`,
+        menuModifyData
+      );
+      if (
+        response.message &&
+        response.message === "Dishes modify successfully"
+      ) {
+        menuModifyData.id = menuID;
+        setMenus((prevState) =>
+          prevState.map((menu) => (menu.id === menuID ? menuModifyData : menu))
+        );
       }
 
-      setSelectedMenu([])
-      setMenuModifyData({dishes: "", price: ""})
+      setSelectedMenu([]);
+      setMenuModifyData({ dishes: "", price: "" });
       handlePopupModify();
     } catch (error) {
       console.error("Error deleting restaurant:", error);
@@ -111,8 +119,16 @@ const MenuList = () => {
                   <span className="text-base font-bold">{menu.price} €</span>
                 </Text>
                 <Flex justifyContent="space-between" className="px-3 pt-3">
-                  <Button colorScheme="teal" onClick={() => handlePopupModify(menu)}>Modifier</Button>
-                  <Button colorScheme="red" onClick={() => handlePopupDelete(menu)}>
+                  <Button
+                    colorScheme="teal"
+                    onClick={() => handlePopupModify(menu)}
+                  >
+                    Modifier
+                  </Button>
+                  <Button
+                    colorScheme="red"
+                    onClick={() => handlePopupDelete(menu)}
+                  >
                     Supprimer
                   </Button>
                 </Flex>
@@ -149,27 +165,30 @@ const MenuList = () => {
               <div>
                 <span>Dishes name</span>
                 <Input
-                    variant="outline"
-                    placeholder="Dishes name"
-                    name="dishes"
-                    value={menuModifyData.dishes}
-                    onChange={handleInputChange}
+                  variant="outline"
+                  placeholder="Dishes name"
+                  name="dishes"
+                  value={menuModifyData.dishes}
+                  onChange={handleInputChange}
                 />
               </div>
               <div>
                 <span>Price</span>
                 <Input
-                    variant="outline"
-                    placeholder="Price"
-                    name="price"
-                    value={menuModifyData.price}
-                    onChange={handleInputChange}
+                  variant="outline"
+                  placeholder="Price"
+                  name="price"
+                  type="number"
+                  step="0.01"
+                  pattern="[0-9]+([.][0-9]+)?"
+                  value={menuModifyData.price}
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="flex justify-end mt-4 mx-auto ">
                 <Button
-                    colorScheme="teal"
-                    onClick={() => modifyDishes(selectedMenu.id)}
+                  colorScheme="teal"
+                  onClick={() => modifyDishes(selectedMenu.id)}
                 >
                   Valider
                 </Button>
@@ -182,11 +201,11 @@ const MenuList = () => {
         )}
         <div className="flex mt-12">
           <Button
-              variant="solid"
-              colorScheme="teal"
-              size="lg"
-              width="100%"
-              onClick={handleAddMenuClick}
+            variant="solid"
+            colorScheme="teal"
+            size="lg"
+            width="100%"
+            onClick={handleAddMenuClick}
           >
             Add Menu
           </Button>
