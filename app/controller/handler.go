@@ -26,6 +26,7 @@ func NewHandler(store *store.Store) *Handler {
 	handler.Get("/", handler.ShowUser())
 	handler.Post("/login", handler.Login())
 	/*Restaurant*/
+	handler.Post("/login-restaurant", handler.LoginRestaurateur())
 	handler.Get("/restaurants", handler.GetRestaurant())
 	handler.Post("/insert-restaurant", handler.CreateRestaurant())
 	handler.Delete("/delete-restaurant", handler.DeleteRestaurant())

@@ -3,6 +3,7 @@ package store
 import (
 	"database/sql"
 	"fmt"
+	"errors"
 	"food_court/facade"
 	"github.com/google/uuid"
 )
@@ -16,6 +17,22 @@ func NewRestaurantStore(db *sql.DB) *RestaurantStore {
 type RestaurantStore struct {
 	*sql.DB
 }
+
+func (r *RestaurantStore) GetRestaurantByName(name string) (facade.RestaurantItem, error) {
+    var restaurant facade.RestaurantItem 
+
+    if err := r.QueryRow(
+		`SELECT id, name, password FROM "restaurant" WHERE name = $1`, name,
+	).Scan(&restaurant.ID, &restaurant.Name, &restaurant.Password); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return facade.RestaurantItem{}, fmt.Errorf("unknow name : %v", name)
+		}
+		return facade.RestaurantItem{}, fmt.Errorf("error : %v", err)
+	}
+
+    return restaurant, nil 
+}
+
 
 func (r *RestaurantStore) GetRestaurant() ([]facade.RestaurantItem, error) {
 	var restaurants []facade.RestaurantItem
