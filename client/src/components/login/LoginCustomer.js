@@ -11,7 +11,8 @@ export default function LoginCustomer() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setLoginData((prevData) => ({ ...prevData, [name]: value }));
+    const trimmedValue = value.trim();
+    setLoginData((prevData) => ({ ...prevData, [name]: trimmedValue }));
   };
 
   const handleClick = () => setShow(!show);
