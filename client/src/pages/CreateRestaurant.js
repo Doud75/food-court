@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import { Input, InputRightElement, InputGroup, Button } from "@chakra-ui/react";
 import { postFetch } from "../utils/postFetch";
 import { useNavigate } from "react-router-dom";
@@ -12,13 +12,13 @@ import {
 
 export default function CreateRestaurant() {
   const navigate = useNavigate();
-  const [show, setShow] = React.useState(false);
-  const [restaurantData, setRestaurantData] = React.useState({
+  const [show, setShow] = useState(false);
+  const [restaurantData, setRestaurantData] = useState({
     name: "",
     category: "",
     password: "",
   });
-  const [error, setError] = React.useState(null);
+  const [error, setError] = useState(null);
 
   const handleClick = () => setShow(!show);
 
@@ -28,7 +28,7 @@ export default function CreateRestaurant() {
   };
   const handleCancel = () => {
     setRestaurantData({ name: "", category: "", password: "" });
-    navigate("/Admin");
+    navigate("/admin");
   };
 
   const handleAddRestaurantClick = async () => {
@@ -45,14 +45,14 @@ export default function CreateRestaurant() {
     }
 
     try {
-      const test = await postFetch("/insert-restaurant", restaurantData);
-      if (test === 409) {
+      const reponse = await postFetch("/insert-restaurant", restaurantData);
+      if (reponse === 409) {
         setError("The name restaurant already exist");
         setTimeout(() => {
           setError(null);
         }, 5000);
       } else {
-        navigate("/Admin");
+        navigate("/admin");
       }
     } catch (error) {
       console.log(error);
@@ -62,7 +62,7 @@ export default function CreateRestaurant() {
   return (
     <div className="flex flex-col m-6 mt-12">
       <h1 className="text-xl">Create restaurant</h1>
-      <div className="mt-12 flex flex-col gap-4">
+      <div className="flex flex-col gap-4 mt-12">
         <div>
           <span>Name</span>
           <Input

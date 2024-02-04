@@ -5,7 +5,9 @@ import MenuList from "./pages/MenuList.js";
 import Orders from "./pages/Orders";
 import Login from "./pages/Login";
 import Admin from "./pages/Admin";
+import MenuHandler from "./pages/MenuHandler";
 import CreateRestaurant from "./pages/CreateRestaurant";
+import CreateMenu from "./pages/CreateMenu.js";
 
 import "./index.css";
 function App() {
@@ -16,15 +18,23 @@ function App() {
           <Routes>
             <Route path="/" element={<Restaurants />} />
             <Route path="/*" element={<Restaurants />} />
-            <Route path="/Restaurants" element={<Restaurants />} />
+            <Route path="/restaurants" element={<Restaurants />} />
             <Route
-              path="/Restaurants/:restaurantID/Menus"
+              path="/restaurants/:restaurantID/menus"
               element={<MenuList />}
             />
-            <Route path="/Orders" element={<Orders />} />
-            <Route path="/Login" element={<Login />} />
-            <Route path="/Admin" element={<Admin />} />
-            <Route path="/CreateRestaurant" element={<CreateRestaurant />} />
+            <Route
+              path="/restaurants/:restaurantID/menus/handler"
+              element={<MenuHandler />}
+            />
+            <Route
+              path="/restaurants/:restaurantID/menus/handler/create-menu"
+              element={<CreateMenu />}
+            />
+            <Route path="/orders" element={<Orders />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/create-restaurant" element={<CreateRestaurant />} />
           </Routes>
         </BrowserRouter>
       </ChakraProvider>

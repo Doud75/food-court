@@ -1,10 +1,10 @@
-import React from "react";
+import { useState } from "react";
 import { Input, InputRightElement, InputGroup, Button } from "@chakra-ui/react";
 import { postFetch } from "../../utils/postFetch";
 
 export default function LoginCustomer() {
-  const [show, setShow] = React.useState(false);
-  const [loginData, setLoginData] = React.useState({
+  const [show, setShow] = useState(false);
+  const [loginData, setLoginData] = useState({
     email: "",
     password: "",
   });

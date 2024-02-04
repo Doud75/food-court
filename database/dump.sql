@@ -32,8 +32,8 @@ CREATE TABLE "order"(
 
 
 ALTER TABLE
-    "menu" ADD CONSTRAINT "menu_restaurant_id_foreign" FOREIGN KEY("restaurant_id") REFERENCES "restaurant"("id");
+    "menu" ADD CONSTRAINT "menu_restaurant_id_foreign" FOREIGN KEY("restaurant_id") REFERENCES "restaurant"("id") ON DELETE CASCADE;
 ALTER TABLE
-    "order" ADD CONSTRAINT "order_user_id_foreign" FOREIGN KEY("user_id") REFERENCES "user"("id");
+    "order" ADD CONSTRAINT "order_user_id_foreign" FOREIGN KEY("user_id") REFERENCES "user"("id") ON DELETE CASCADE;
 ALTER TABLE
-    "order" ADD CONSTRAINT "order_restaurant_id_foreign" FOREIGN KEY("restaurant_id") REFERENCES "restaurant"("id");
+    "order" ADD CONSTRAINT "order_restaurant_id_foreign" FOREIGN KEY("restaurant_id") REFERENCES "restaurant"("id") ON DELETE CASCADE;

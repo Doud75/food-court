@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { getFetch } from "../../utils/getFetch";
 import { deleteFetch } from "../../utils/deleteFetch";
 import {
@@ -12,7 +12,7 @@ import {
   PopoverCloseButton,
 } from "@chakra-ui/react";
 export default function ListRestaurant() {
-  const [restaurants, setRestaurants] = React.useState([]);
+  const [restaurants, setRestaurants] = useState([]);
 
   const handleDeleteRestaurant = async (id) => {
     try {
@@ -26,7 +26,7 @@ export default function ListRestaurant() {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await getFetch(`/restaurants`);
@@ -45,38 +45,42 @@ export default function ListRestaurant() {
         <span className="w-1/2">Category</span>
       </div>
       <div>
-        {restaurants.map((restaurant) => (
-          <Popover key={restaurant.id}>
-            <PopoverTrigger>
-              <div>
-                <Divider className="mb-6" />
-                <div className="flex text-start mb-3 text-sm">
-                  <span className="w-1/2">{restaurant.name}</span>
-                  <span className="w-1/2">{restaurant.category}</span>
+        {restaurants && restaurants.length > 0 ? (
+          restaurants.map((restaurant) => (
+            <Popover key={restaurant.id}>
+              <PopoverTrigger>
+                <div>
+                  <Divider className="mb-6" />
+                  <div className="flex text-start mb-3 text-sm">
+                    <span className="w-1/2">{restaurant.name}</span>
+                    <span className="w-1/2">{restaurant.category}</span>
+                  </div>
                 </div>
-              </div>
-            </PopoverTrigger>
-            <PopoverContent>
-              <PopoverCloseButton />
-              <PopoverHeader border="0" pt={4} className="self-start">
-                Delete {restaurant.name}
-              </PopoverHeader>
-              <PopoverBody>
-                <div className="text-left">
-                  Are you sure? You can’t undo this action afterwards.
-                </div>
-                <Button
-                  colorScheme="red"
-                  variant="outline"
-                  className="float-right"
-                  onClick={() => handleDeleteRestaurant(restaurant.id)}
-                >
-                  Delete
-                </Button>
-              </PopoverBody>
-            </PopoverContent>
-          </Popover>
-        ))}
+              </PopoverTrigger>
+              <PopoverContent>
+                <PopoverCloseButton />
+                <PopoverHeader border="0" pt={4} className="self-start">
+                  Delete {restaurant.name}
+                </PopoverHeader>
+                <PopoverBody>
+                  <div className="text-left">
+                    Are you sure? You can’t undo this action afterwards.
+                  </div>
+                  <Button
+                    colorScheme="red"
+                    variant="outline"
+                    className="float-right"
+                    onClick={() => handleDeleteRestaurant(restaurant.id)}
+                  >
+                    Delete
+                  </Button>
+                </PopoverBody>
+              </PopoverContent>
+            </Popover>
+          ))
+        ) : (
+          <span>No restaurant available</span>
+        )}
       </div>
     </div>
   );
