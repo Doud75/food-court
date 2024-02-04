@@ -5,7 +5,7 @@ module.exports = {
     extend: {
       flexGrow: {
         2: '2'
-      }
+      },
     },
     fontSize: {
       xl: [
@@ -42,6 +42,14 @@ module.exports = {
           letterSpacing: "-0.01em",
           fontWeight: "400",
         },
+      ],
+
+      "2xl": [
+        "24px",
+        {
+          fontWeight: "600",
+        },
+
       ],
     },
   },
