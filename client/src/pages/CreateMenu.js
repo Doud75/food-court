@@ -25,7 +25,7 @@ export default function CreateMenu() {
   };
   const handleCancel = () => {
     setMenuData({ dishes: "", price: "", restaurant_id: "" });
-    navigate(`/Restaurants/${restaurantID}/Menus/Handler`);
+    navigate(`/restaurants/${restaurantID}/menus/handler`);
   };
 
   const handleAddMenuClick = async () => {
@@ -45,7 +45,7 @@ export default function CreateMenu() {
           setError(null);
         }, 5000);
       } else {
-        navigate(`/Restaurants/${restaurantID}/Menus/Handler`);
+        navigate(`/restaurants/${restaurantID}/menus/handler`);
       }
     } catch (error) {
       console.log(error);
@@ -55,7 +55,7 @@ export default function CreateMenu() {
   return (
     <div className="flex flex-col m-6 mt-12">
       <h1 className="text-xl">Create menu</h1>
-      <div className="mt-12 flex flex-col gap-4">
+      <div className="flex flex-col gap-4 mt-12">
         <div>
           <span>Name</span>
           <Input

@@ -13,14 +13,14 @@ export default function Admin() {
   const navigate = useNavigate();
 
   const handleAddRestaurantClick = () => {
-    navigate("/CreateRestaurant");
+    navigate("/create-restaurant");
   };
 
   return (
     <div className="flex flex-col m-6">
       <Tabs align="center">
         <div>
-          <TabList className="place-content-center	">
+          <TabList className="place-content-center ">
             <Tab isDisabled>Restaurateur</Tab>
           </TabList>
         </div>
