@@ -1,8 +1,15 @@
+const token = sessionStorage.getItem("token");
+
 export async function postFetch(url, data) {
   try {
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    };
     const response = await fetch(`http://localhost:8097${url}`, {
       method: "POST",
       body: JSON.stringify(data),
+      headers: headers,
     });
 
     if (!response.ok) {

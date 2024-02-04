@@ -11,33 +11,39 @@ import RestaurantOrders from "./pages/RestaurantOrders.js";
 
 import "./index.css";
 function App() {
+  const isAuthenticated = !!sessionStorage.getItem("token");
+  console.log(isAuthenticated);
   return (
     <div className="App">
       <ChakraProvider>
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/*" element={<Home />} />
-            <Route
-              path="/restaurants/:restaurantID/menus"
-              element={<MenuList />}
-            />
-            <Route
-              path="/restaurants/:restaurantID/orders"
-              element={<RestaurantOrders/>}
-            />
-            <Route
-              path="/restaurants/:restaurantID/menus/handler"
-              element={<MenuHandler />}
-            />
-            <Route
-              path="/restaurants/:restaurantID/menus/handler/create-menu"
-              element={<CreateMenu />}
-            />
-            <Route path="/login" element={<Login />} />
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/create-restaurant" element={<CreateRestaurant />} />
-          </Routes>
+          {isAuthenticated ? (
+            <Routes>
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/*" element={<Restaurants />} />
+              <Route path="/restaurants" element={<Restaurants />} />
+              <Route
+                path="/restaurants/:restaurantID/menus"
+                element={<MenuList />}
+              />
+              <Route
+                path="/restaurants/:restaurantID/menus/handler"
+                element={<MenuHandler />}
+              />
+              <Route
+                path="/restaurants/:restaurantID/menus/handler/createMenu"
+                element={<CreateMenu />}
+              />
+              <Route path="/orders" element={<Orders />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/createrestaurant" element={<CreateRestaurant />} />
+            </Routes>
+          ) : (
+            <Routes>
+              <Route path="/*" element={<Login />} />
+            </Routes>
+          )}
         </BrowserRouter>
       </ChakraProvider>
     </div>

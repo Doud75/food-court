@@ -18,8 +18,11 @@ export default function LoginCustomer() {
   const handleClick = () => setShow(!show);
   const handleLogin = async () => {
     try {
-      await postFetch("/login", loginData);
-      console.log("Login successfully!");
+      const reponse = await postFetch("/login", loginData);
+      if (reponse.token) {
+        sessionStorage.setItem("token", reponse.token);
+        console.log("Login successfully!");
+      }
     } catch (error) {
       console.error("Error login :", error);
     }
