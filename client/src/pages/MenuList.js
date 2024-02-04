@@ -24,7 +24,7 @@ const MenuList = () => {
     <>
       <nav className="p-6">
         <Button colorScheme="teal" size="sm">
-          <a href="/Restaurants">
+          <a href="/restaurants">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -50,7 +50,7 @@ const MenuList = () => {
                   alt="Green double couch with wooden legs"
                   borderRadius="lg"
                 />
-                <Text className="flex justify-between pt-3 px-3">
+                <Text className="flex justify-between px-3 pt-3">
                   <span className="text-base font-semibold">{menu.dishes}</span>
                   <span className="text-base font-bold">{menu.price} €</span>
                 </Text>

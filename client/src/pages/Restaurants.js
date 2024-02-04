@@ -25,7 +25,7 @@ export default function Restaurants() {
       <div className="p-5">
         {restaurants && restaurants.length > 0 ? (
           restaurants.map((restaurant) => (
-            <Link to={"/Restaurants/" + restaurant.id + "/Menus"}>
+            <Link to={"/restaurants/" + restaurant.id + "/menus"}>
               <Card
                 key={restaurant.id}
                 className="mb-5"
@@ -37,12 +37,12 @@ export default function Restaurants() {
                   src="https://source.unsplash.com/bol-de-salades-de-legumes-IGfIGP5ONV0"
                   alt="Green double couch with wooden legs"
                 />
-                <Text className="pt-3 p-3">
+                <Text className="p-3 pt-3">
                   <div className="w-4/6">
-                    <h4 className="text-base font-semibold mb-2">
+                    <h4 className="mb-2 text-base font-semibold">
                       {restaurant.name}
                     </h4>
-                    <p className="line-clamp-2 text-sm">
+                    <p className="text-sm line-clamp-2">
                       {restaurant.description}
                     </p>
                   </div>

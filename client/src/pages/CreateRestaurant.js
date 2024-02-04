@@ -28,7 +28,7 @@ export default function CreateRestaurant() {
   };
   const handleCancel = () => {
     setRestaurantData({ name: "", category: "", password: "" });
-    navigate("/Admin");
+    navigate("/admin");
   };
 
   const handleAddRestaurantClick = async () => {
@@ -52,7 +52,7 @@ export default function CreateRestaurant() {
           setError(null);
         }, 5000);
       } else {
-        navigate("/Admin");
+        navigate("/admin");
       }
     } catch (error) {
       console.log(error);
@@ -62,7 +62,7 @@ export default function CreateRestaurant() {
   return (
     <div className="flex flex-col m-6 mt-12">
       <h1 className="text-xl">Create restaurant</h1>
-      <div className="mt-12 flex flex-col gap-4">
+      <div className="flex flex-col gap-4 mt-12">
         <div>
           <span>Name</span>
           <Input

@@ -18,7 +18,7 @@ const MenuList = () => {
   const navigate = useNavigate();
 
   const handleAddMenuClick = () => {
-    navigate(`/Restaurants/${restaurantID}/Menus/Handler/CreateMenu`);
+    navigate(`/restaurants/${restaurantID}/menus/handler/create-menu`);
   };
 
   useEffect(() => {
@@ -93,7 +93,7 @@ const MenuList = () => {
     <>
       <nav className="p-6">
         <Button colorScheme="teal" size="sm">
-          <a href="/Restaurants">
+          <a href="/restaurants">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -114,7 +114,7 @@ const MenuList = () => {
           menus.map((menu) => (
             <Card key={menu.id} className="mb-5">
               <CardBody>
-                <Text className="flex justify-between pt-3 px-3">
+                <Text className="flex justify-between px-3 pt-3">
                   <span className="text-base font-semibold">{menu.dishes}</span>
                   <span className="text-base font-bold">{menu.price} €</span>
                 </Text>
@@ -140,12 +140,12 @@ const MenuList = () => {
         )}
         {popupDelete && (
           <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
-            <div className="bg-white p-8 rounded w-3/4 flex flex-col">
+            <div className="flex flex-col w-3/4 p-8 bg-white rounded">
               <p>
                 Êtes-vous sûr de vouloir supprimer ce plat :{" "}
                 <strong className="font-bold">{selectedMenu.dishes}</strong> ?
               </p>
-              <div className="flex justify-end mt-4 mx-auto ">
+              <div className="flex justify-end mx-auto mt-4 ">
                 <Button
                   colorScheme="teal"
                   onClick={() => deleteDishes(selectedMenu.id)}
@@ -161,7 +161,7 @@ const MenuList = () => {
         )}
         {popupModify && (
           <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
-            <div className="bg-white p-8 rounded w-3/4 flex flex-col">
+            <div className="flex flex-col w-3/4 p-8 bg-white rounded">
               <div>
                 <span>Dishes name</span>
                 <Input
@@ -185,7 +185,7 @@ const MenuList = () => {
                   onChange={handleInputChange}
                 />
               </div>
-              <div className="flex justify-end mt-4 mx-auto ">
+              <div className="flex justify-end mx-auto mt-4 ">
                 <Button
                   colorScheme="teal"
                   onClick={() => modifyDishes(selectedMenu.id)}
