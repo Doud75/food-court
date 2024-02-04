@@ -17,7 +17,7 @@ export default function LoginRestaurateur() {
   const handleClick = () => setShow(!show);
   const handleLogin = async () => {
     try {
-      const response = await postFetch("/login-restaurant", loginData);
+      await postFetch("/login-restaurant", loginData);
       console.log("Restaurateur logged in successfully!");
     } catch (error) {
       console.error("Error logging in restaurateur:", error);
