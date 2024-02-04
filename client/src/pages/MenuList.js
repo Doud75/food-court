@@ -3,7 +3,6 @@ import { getFetch } from "../utils/getFetch";
 import { Button } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import CardComponent from "../components/ui/CardComponent";
-
 const MenuList = () => {
   const [menus, setMenus] = useState([]);
   const { restaurantID } = useParams();
@@ -44,19 +43,14 @@ const MenuList = () => {
       <div className="p-8">
         {menus && menus.length > 0 ? (
           menus.map((menu) => (
-            <Card key={menu.id} className="mb-5">
-              <CardBody>
-                <Image
-                  src="https://source.unsplash.com/bol-de-salades-de-legumes-IGfIGP5ONV0"
-                  alt="Green double couch with wooden legs"
-                  borderRadius="lg"
-                />
-                <Text className="flex justify-between px-3 pt-3">
-                  <span className="text-base font-semibold">{menu.dishes}</span>
-                  <span className="text-base font-bold">{menu.price} €</span>
-                </Text>
-              </CardBody>
-            </Card>
+            <CardComponent
+              key={menu.id}
+              name={menu.dishes}
+              description={
+                "Lorem ta maman aime le chocolats mais aussi les grosses gauffre au sucre"
+              }
+              price={menu.price}
+            />
           ))
         ) : (
           <span>No menu available</span>
