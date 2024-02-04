@@ -1,5 +1,6 @@
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import LoginCustomer from "../components/login/LoginCustomer";
+import LoginRestaurateur from "../components/login/LoginRestaurateur";
 
 export default function Connexion() {
   return (
@@ -22,8 +23,8 @@ export default function Connexion() {
             <TabPanel p="0px">
               <LoginCustomer />
             </TabPanel>
-            <TabPanel>
-              <p>Restaurateur</p>
+            <TabPanel p="0px">
+              <LoginRestaurateur />
             </TabPanel>
           </TabPanels>
         </Tabs>

@@ -10,12 +10,12 @@ import (
 	"time"
 )
 
-func CreatJwt(id uuid.NullUUID, email string, role string) (string, error) {
+func CreatJwt(id uuid.NullUUID, identity string, role string) (string, error) {
 	key := []byte(os.Getenv("JWT_KEY"))
 	t := jwt.NewWithClaims(jwt.SigningMethodHS512,
 		jwt.MapClaims{
 			"id":        id,
-			"email":     email,
+			"identity":     identity,
 			"role":      role,
 			"ExpiresAt": jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
 		})

@@ -44,9 +44,9 @@ func (h *Handler) Login() http.HandlerFunc {
 
 		user, err := h.Store.GetUserByMail(auth.Email)
 		if err != nil {
-			http.Error(writer, err.Error(), http.StatusNotFound)
-			return
-		}
+            http.Error(writer, "Identifiant incorrect", http.StatusUnauthorized)
+            return
+        }
 
 		if user.Email == "" || user.Password == "" {
 			err = json.NewEncoder(writer).Encode(lostUser)

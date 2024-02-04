@@ -15,6 +15,7 @@ type RestaurantID struct {
 }
 
 type RestaurantStoreInterface interface {
+	GetRestaurantByName(name string) (RestaurantItem, error)
 	GetRestaurant() ([]RestaurantItem, error)
 	CreateRestaurant(RestaurantItem) (uuid.UUID, error)
 	DeleteRestaurant(uuid.UUID) error
