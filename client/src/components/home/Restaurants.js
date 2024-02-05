@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { getFetch } from "../utils/getFetch";
+import { getFetch } from "../../utils/getFetch.js";
 import { Link } from "react-router-dom";
-import CardComponent from "../components/ui/CardComponent.js";
+import CardComponent from "../ui/CardComponent.js";
 
 export default function Restaurants() {
   const [restaurants, setRestaurants] = useState([]);

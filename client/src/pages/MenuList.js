@@ -24,7 +24,7 @@ const MenuList = () => {
     <>
       <nav className="p-6">
         <Button colorScheme="teal" size="sm">
-          <a href="/restaurants">
+          <a href="/">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
