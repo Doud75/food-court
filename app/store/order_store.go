@@ -20,21 +20,23 @@ type OrderStore struct {
 
 
 
-func (o *OrderStore) GetOrdersByUser(userID uuid.UUID) ([]facade.OrderItem, error) {
-	query := `SELECT id, dishes_list, total_price, reference, state, user_id, restaurant_id FROM "order" WHERE user_id = $1`
+func (o *OrderStore) GetOrdersByUser(userID uuid.UUID) ([]facade.OrderItemWithRestaurant, error) {
+	query := `
+		SELECT o.id, o.dishes_list, o.total_price, o.reference, o.state, o.user_id, o.restaurant_id, r.name
+		FROM "order" o
+		JOIN "restaurant" r ON o.restaurant_id = r.id
+		WHERE o.user_id = $1
+	`
 	rows, err := o.Query(query, userID)
-
-
 	if err != nil {
-		fmt.Println("Error querying orders by user:", err)
-		return nil, err
+		return nil, fmt.Errorf("error querying orders by user: %v", err)
 	}
 	defer rows.Close()
 
-	var orders []facade.OrderItem
+	var orders []facade.OrderItemWithRestaurant
 
 	for rows.Next() {
-		var order facade.OrderItem
+		var order facade.OrderItemWithRestaurant
 		var dishesList json.RawMessage
 
 		err := rows.Scan(
@@ -45,16 +47,21 @@ func (o *OrderStore) GetOrdersByUser(userID uuid.UUID) ([]facade.OrderItem, erro
 			&order.State,
 			&order.UserID,
 			&order.RestaurantID,
+			&order.RestaurantName,
 		)
 		if err != nil {
-			fmt.Println("Error scanning order row:", err)
-			return nil, err
+			return nil, fmt.Errorf("error scanning order row: %v", err)
 		}
 
 		order.DishesList = dishesList
 		orders = append(orders, order)
 	}
 
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("error iterating over order rows: %v", err)
+	}
+
 	return orders, nil
 }
+
 
