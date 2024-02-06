@@ -9,7 +9,8 @@ export default function Orders() {
     const fetchData = async () => {
       try {
         const data = await getFetch(
-          `/orders/1a6c23e7-4c5e-4a2d-b038-8a7f9f2e15a1`
+          //fake data in progress
+          `/orders-client/1a6c23e7-4c5e-4a2d-b038-8a7f9f2e15a1`
         );
         setOrders(data);
       } catch (error) {

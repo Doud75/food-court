@@ -27,7 +27,7 @@ type OrderItemWithRestaurant struct {
 }
 
 type OrderStoreInterface interface {
-	GetOrdersByUser(uuid.UUID) ([]OrderItem, error)
+	GetOrdersByUser(uuid.UUID) ([]OrderItemWithRestaurant, error)
 	GetPendingOrdersByRestaurant(uuid.UUID) ([]OrderItem, error)
 	UpdateOrderToDone(uuid.UUID, uuid.UUID) error
 }
