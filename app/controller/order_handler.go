@@ -2,9 +2,9 @@ package controller
 
 import (
 	"encoding/json"
-	"net/http"
-	"github.com/google/uuid"
 	"github.com/go-chi/chi"
+	"github.com/google/uuid"
+	"net/http"
 )
 
 func (h *Handler) GetOrdersByUser() http.HandlerFunc {
@@ -38,4 +38,52 @@ func (h *Handler) GetOrdersByUser() http.HandlerFunc {
 	}
 }
 
+func (h *Handler) GetPendingOrdersByRestaurant() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		writer.Header().Set("Content-Type", "application/json")
 
+		restaurantIDString := chi.URLParam(request, "restaurantID")
+
+		restaurantID, err := uuid.Parse(restaurantIDString)
+
+		orders, err := h.Store.GetPendingOrdersByRestaurant(restaurantID)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		err = json.NewEncoder(writer).Encode(orders)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+}
+
+func (h *Handler) UpdateOrderToDone() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		writer.Header().Set("Content-Type", "application/json")
+
+		orderIDString := chi.URLParam(request, "orderID")
+		restaurantIDString := chi.URLParam(request, "restaurantID")
+
+		restaurantID, err := uuid.Parse(restaurantIDString)
+		orderID, err := uuid.Parse(orderIDString)
+
+		err = h.Store.UpdateOrderToDone(restaurantID, orderID)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		response := map[string]interface{}{
+			"message": "Order set to done successfully",
+		}
+
+		err = json.NewEncoder(writer).Encode(response)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+}

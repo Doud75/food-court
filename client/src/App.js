@@ -7,6 +7,7 @@ import MenuHandler from "./pages/MenuHandler";
 import CreateRestaurant from "./pages/CreateRestaurant";
 import CreateMenu from "./pages/CreateMenu.js";
 import Home from "./pages/Home.js";
+import RestaurantOrders from "./pages/RestaurantOrders.js";
 
 import "./index.css";
 function App() {
@@ -20,6 +21,10 @@ function App() {
             <Route
               path="/restaurants/:restaurantID/menus"
               element={<MenuList />}
+            />
+            <Route
+              path="/restaurants/:restaurantID/orders"
+              element={<RestaurantOrders/>}
             />
             <Route
               path="/restaurants/:restaurantID/menus/handler"

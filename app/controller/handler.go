@@ -36,7 +36,9 @@ func NewHandler(store *store.Store) *Handler {
 	handler.Post("/restaurants/{restaurantID}/modify-dishes/{dishesID}", handler.ModifyDishes())
 	handler.Post("/insert-menu", handler.AddMenu())
 	/*Order*/
-	handler.Get("/orders/{userID}", handler.GetOrdersByUser())
+	handler.Get("/orders-client/{userID}", handler.GetOrdersByUser())
+	handler.Get("/orders-restaurant/{restaurantID}", handler.GetPendingOrdersByRestaurant())
+	handler.Post("/orders/{restaurantID}/{orderID}", handler.UpdateOrderToDone())
 
 	return handler
 }

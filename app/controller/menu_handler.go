@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"food_court/facade"
 	"github.com/go-chi/chi"
+	"github.com/google/uuid"
 	"net/http"
 )
 
@@ -25,10 +26,13 @@ func (h *Handler) RemoveDishesByID() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("Content-Type", "application/json")
 
-		dishesID := chi.URLParam(request, "dishesID")
-		restaurantID := chi.URLParam(request, "restaurantID")
+		dishesIDString := chi.URLParam(request, "dishesID")
+		restaurantIDString := chi.URLParam(request, "restaurantID")
 
-		err := h.Store.RemoveDishesByID(restaurantID, dishesID)
+		restaurantID, err := uuid.Parse(restaurantIDString)
+		dishesID, err := uuid.Parse(dishesIDString)
+
+		err = h.Store.RemoveDishesByID(restaurantID, dishesID)
 		if err != nil {
 			http.Error(writer, "Invalid restaurant ID or dishesID", http.StatusBadRequest)
 			return
@@ -51,13 +55,16 @@ func (h *Handler) ModifyDishes() http.HandlerFunc {
 		writer.Header().Set("Content-Type", "application/json")
 		var menu facade.MenuItem
 
-		dishesID := chi.URLParam(request, "dishesID")
-		restaurantID := chi.URLParam(request, "restaurantID")
+		dishesIDString := chi.URLParam(request, "dishesID")
+		restaurantIDString := chi.URLParam(request, "restaurantID")
 		err := json.NewDecoder(request.Body).Decode(&menu)
 		if err != nil {
 			http.Error(writer, "Invalid request body", http.StatusBadRequest)
 			return
 		}
+
+		restaurantID, err := uuid.Parse(restaurantIDString)
+		dishesID, err := uuid.Parse(dishesIDString)
 
 		err = h.Store.ModifyDishes(restaurantID, dishesID, menu)
 		if err != nil {
