@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { getFetch } from "../utils/getFetch";
-import { Button } from "@chakra-ui/react";
+import { Card, CardBody, Text, Image, Button } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-import CardComponent from "../components/ui/CardComponent";
+
 const MenuList = () => {
   const [menus, setMenus] = useState([]);
   const { restaurantID } = useParams();
@@ -20,11 +20,19 @@ const MenuList = () => {
     fetchData();
   }, [restaurantID]);
 
+  async function addDishiesToOrder(menu) {
+    const existingOrders = JSON.parse(localStorage.getItem("orders")) || [];
+
+    existingOrders.push(menu);
+
+    localStorage.setItem("orders", JSON.stringify(existingOrders));
+  }
+
   return (
     <>
       <nav className="p-6">
         <Button colorScheme="teal" size="sm">
-          <a href="/">
+          <a href="/restaurants">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -40,17 +48,31 @@ const MenuList = () => {
           </a>
         </Button>
       </nav>
+
       <div className="p-8">
         {menus && menus.length > 0 ? (
           menus.map((menu) => (
-            <CardComponent
-              key={menu.id}
-              name={menu.dishes}
-              description={
-                "Lorem ta maman aime le chocolats mais aussi les grosses gauffre au sucre"
-              }
-              price={menu.price}
-            />
+            <Card key={menu.id} className="mb-5">
+              <CardBody>
+                <Image
+                  src="https://source.unsplash.com/bol-de-salades-de-legumes-IGfIGP5ONV0"
+                  alt="Green double couch with wooden legs"
+                  borderRadius="lg"
+                />
+                <Text className="flex justify-between py-2">
+                  <span className="text-base font-semibold">{menu.dishes}</span>
+                  <span className="text-base font-bold">{menu.price} €</span>
+                </Text>
+                <Button
+                  onClick={() => addDishiesToOrder(menu)}
+                  className="w-full mx-auto"
+                  colorScheme="teal"
+                  size="sm"
+                >
+                  Add to order
+                </Button>
+              </CardBody>
+            </Card>
           ))
         ) : (
           <span>No menu available</span>
