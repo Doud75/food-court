@@ -5,6 +5,8 @@ import (
 	"food_court/facade"
 	"food_court/helper"
 	"net/http"
+	"github.com/google/uuid"
+
 )
 
 func (h *Handler) ShowUser() http.HandlerFunc {
@@ -30,11 +32,12 @@ func (h *Handler) Login() http.HandlerFunc {
 
 		lostUser := struct {
 			Error string `json:"error"`
-		}{"utilisateur ou mot de passe incorecte"}
+		}{"utilisateur ou mot de passe incorrecte"}
 
-		res := struct {
-			Token string `json:"token"`
-		}{}
+		var res struct {
+			Token string    `json:"token"`
+			UserID uuid.UUID `json:"user_id"`
+		}
 
 		err := json.NewDecoder(request.Body).Decode(&auth)
 		if err != nil {
@@ -44,9 +47,9 @@ func (h *Handler) Login() http.HandlerFunc {
 
 		user, err := h.Store.GetUserByMail(auth.Email)
 		if err != nil {
-            http.Error(writer, "Identifiant incorrect", http.StatusUnauthorized)
-            return
-        }
+			http.Error(writer, "Identifiant incorrect", http.StatusUnauthorized)
+			return
+		}
 
 		if user.Email == "" || user.Password == "" {
 			err = json.NewEncoder(writer).Encode(lostUser)
@@ -74,6 +77,7 @@ func (h *Handler) Login() http.HandlerFunc {
 		}
 
 		res.Token = token
+		res.UserID = user.ID.UUID
 
 		err = json.NewEncoder(writer).Encode(res)
 		if err != nil {
@@ -82,3 +86,4 @@ func (h *Handler) Login() http.HandlerFunc {
 		}
 	}
 }
+

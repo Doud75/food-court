@@ -5,23 +5,24 @@ import (
 	"net/http"
 	"food_court/facade"
     "food_court/helper"
+	"github.com/google/uuid"
+
 )
 
 func (h *Handler) LoginRestaurateur() http.HandlerFunc {
     return func(w http.ResponseWriter, r *http.Request) {
-       
-
 
         lostUser := struct {
-			Error string `json:"error"`
-		}{"utilisateur ou mot de passe incorecte"}
-        
-        res := struct {
-			Token string `json:"token"`
-		}{}
+            Error string `json:"error"`
+        }{"utilisateur ou mot de passe incorrecte"}
+
+        var res struct {
+            Token   string    `json:"token"`
+            RestID  uuid.UUID `json:"restaurant_id"`
+        }
 
         var loginData struct {
-            Name     string `json:"name"` 
+            Name     string `json:"name"`
             Password string `json:"password"`
         }
         err := json.NewDecoder(r.Body).Decode(&loginData)
@@ -29,7 +30,7 @@ func (h *Handler) LoginRestaurateur() http.HandlerFunc {
             http.Error(w, err.Error(), http.StatusBadRequest)
             return
         }
-       
+
         restaurant, err := h.Store.GetRestaurantByName(loginData.Name)
         if err != nil {
             http.Error(w, "Identifiant incorrect", http.StatusUnauthorized)
@@ -38,30 +39,32 @@ func (h *Handler) LoginRestaurateur() http.HandlerFunc {
 
         match := facade.CheckPasswordHash(loginData.Password, restaurant.Password)
 
-		if match == false {
-			err = json.NewEncoder(w).Encode(lostUser)
-			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
-			}
-			return
-		}
+        if !match {
+            err = json.NewEncoder(w).Encode(lostUser)
+            if err != nil {
+                http.Error(w, err.Error(), http.StatusInternalServerError)
+                return
+            }
+            return
+        }
 
         token, err := helper.CreatJwt(restaurant.ID, restaurant.Name, "restaurant")
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
+        if err != nil {
+            http.Error(w, err.Error(), http.StatusInternalServerError)
+            return
+        }
 
-		res.Token = token
+        res.Token = token
+        res.RestID = restaurant.ID.UUID
 
-		err = json.NewEncoder(w).Encode(res)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
+        err = json.NewEncoder(w).Encode(res)
+        if err != nil {
+            http.Error(w, err.Error(), http.StatusInternalServerError)
+            return
+        }
     }
 }
+
 
 func (h *Handler) GetRestaurant() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
