@@ -46,7 +46,7 @@ func (m *MenuStore) GetMenuByRestaurantID(restaurantID string) ([]facade.MenuIte
 	return menus, nil
 }
 
-func (m *MenuStore) RemoveDishesByID(restaurantID string, dishesID string) error {
+func (m *MenuStore) RemoveDishesByID(restaurantID uuid.UUID, dishesID uuid.UUID) error {
 	var existingID uuid.NullUUID
 	if err := m.QueryRow(`SELECT id FROM "menu" WHERE restaurant_id = $1 AND id = $2`, restaurantID, dishesID).
 		Scan(&existingID); err != nil {
@@ -66,7 +66,7 @@ func (m *MenuStore) RemoveDishesByID(restaurantID string, dishesID string) error
 	return nil
 }
 
-func (m *MenuStore) ModifyDishes(restaurantID string, dishesID string, menu facade.MenuItem) error {
+func (m *MenuStore) ModifyDishes(restaurantID uuid.UUID, dishesID uuid.UUID, menu facade.MenuItem) error {
 	var existingID uuid.NullUUID
 	if err := m.QueryRow(`SELECT id FROM "menu" WHERE restaurant_id = $1 AND id = $2`, restaurantID, dishesID).
 		Scan(&existingID); err != nil {
