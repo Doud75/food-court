@@ -26,10 +26,14 @@ export default function LoginCustomer() {
         await multiSetSessionStorage([
           ["token", reponse.token],
           ["ID", reponse.user_id],
-          ["role", "user"],
+          ["role", reponse.role],
         ]);
         console.log("Login successfully!");
-        window.location.href = "/home";
+        if (reponse.role === "admin") {
+          window.location.href = "/admin";
+        } else {
+          window.location.href = "/home";
+        }
       }
     } catch (error) {
       console.error("Error login :", error);

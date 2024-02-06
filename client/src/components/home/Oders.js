@@ -4,7 +4,6 @@ import { Card, Button } from "@chakra-ui/react";
 
 export default function Orders() {
   const userID = sessionStorage.getItem("ID");
-  console.log(userID);
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {

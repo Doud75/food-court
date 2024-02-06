@@ -33,24 +33,26 @@ function App() {
                 path="/*"
                 element={
                   isAuthenticated ? (
-                    sessionStorage.getItem("role") === "user" ? (
-                      <Home />
-                    ) : (
+                    sessionStorage.getItem("role") === "admin" ? (
+                      <Admin />
+                    ) : sessionStorage.getItem("role") === "restaurant" ? (
                       <HomeRestaurant />
+                    ) : (
+                      <Home />
                     )
                   ) : (
                     <Login />
                   )
                 }
               />
-              <Route path="/home" element={requireRole("user", <Home />)} />
+              <Route path="/home" element={requireRole("customer", <Home />)} />
               <Route
                 path="/home-restaurant"
                 element={requireRole("restaurant", <HomeRestaurant />)}
               />
               <Route
                 path="/restaurants/:restaurantID/menus"
-                element={requireRole("user", <MenuList />)}
+                element={requireRole("customer", <MenuList />)}
               />
               <Route
                 path="/home-restaurant/create-menu"

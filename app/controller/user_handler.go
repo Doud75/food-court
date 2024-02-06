@@ -37,6 +37,8 @@ func (h *Handler) Login() http.HandlerFunc {
 		var res struct {
 			Token string    `json:"token"`
 			UserID uuid.UUID `json:"user_id"`
+			Role   string    `json:"role"`
+
 		}
 
 		err := json.NewDecoder(request.Body).Decode(&auth)
@@ -78,6 +80,7 @@ func (h *Handler) Login() http.HandlerFunc {
 
 		res.Token = token
 		res.UserID = user.ID.UUID
+		res.Role = user.Role
 
 		err = json.NewEncoder(writer).Encode(res)
 		if err != nil {
