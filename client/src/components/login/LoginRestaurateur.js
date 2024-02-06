@@ -1,8 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Input, InputRightElement, InputGroup, Button } from "@chakra-ui/react";
 import { postFetch } from "../../utils/postFetch";
+import { multiSetSessionStorage } from "../../utils/utilitaire";
 
 export default function LoginRestaurateur() {
+  const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [loginData, setLoginData] = useState({
     name: "",
@@ -17,8 +20,16 @@ export default function LoginRestaurateur() {
   const handleClick = () => setShow(!show);
   const handleLogin = async () => {
     try {
-      await postFetch("/login-restaurant", loginData);
-      console.log("Restaurateur logged in successfully!");
+      const reponse = await postFetch("/login-restaurant", loginData);
+      if (reponse.token) {
+        await multiSetSessionStorage([
+          ["token", reponse.token],
+          ["ID", reponse.restaurant_id],
+          ["role", "restaurant"],
+        ]);
+        navigate("/home-restaurant");
+        console.log("Login successfully!");
+      }
     } catch (error) {
       console.error("Error logging in restaurateur:", error);
     }

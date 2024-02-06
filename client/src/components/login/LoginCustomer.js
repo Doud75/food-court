@@ -1,8 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Input, InputRightElement, InputGroup, Button } from "@chakra-ui/react";
 import { postFetch } from "../../utils/postFetch";
+import { multiSetSessionStorage } from "../../utils/utilitaire";
 
 export default function LoginCustomer() {
+  const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [loginData, setLoginData] = useState({
     email: "",
@@ -20,7 +23,12 @@ export default function LoginCustomer() {
     try {
       const reponse = await postFetch("/login", loginData);
       if (reponse.token) {
-        sessionStorage.setItem("token", reponse.token);
+        await multiSetSessionStorage([
+          ["token", reponse.token],
+          ["ID", reponse.user_id],
+          ["role", "user"],
+        ]);
+        navigate("/home");
         console.log("Login successfully!");
       }
     } catch (error) {
