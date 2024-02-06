@@ -20,11 +20,15 @@ function App() {
           {isAuthenticated ? (
             <Routes>
               <Route path="/admin" element={<Admin />} />
-              <Route path="/*" element={<Restaurants />} />
-              <Route path="/restaurants" element={<Restaurants />} />
+              <Route path="/*" element={<Home />} />
+              <Route path="/Home" element={<Home />} />
               <Route
                 path="/restaurants/:restaurantID/menus"
                 element={<MenuList />}
+              />
+              <Route
+                path="/restaurants/:restaurantID/orders"
+                element={<RestaurantOrders />}
               />
               <Route
                 path="/restaurants/:restaurantID/menus/handler"
@@ -34,7 +38,6 @@ function App() {
                 path="/restaurants/:restaurantID/menus/handler/createMenu"
                 element={<CreateMenu />}
               />
-              <Route path="/orders" element={<Orders />} />
               <Route path="/login" element={<Login />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/createrestaurant" element={<CreateRestaurant />} />
