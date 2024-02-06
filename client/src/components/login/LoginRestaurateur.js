@@ -27,8 +27,8 @@ export default function LoginRestaurateur() {
           ["ID", reponse.restaurant_id],
           ["role", "restaurant"],
         ]);
-        navigate("/home-restaurant");
         console.log("Login successfully!");
+        window.location.href = "/home-restaurant";
       }
     } catch (error) {
       console.error("Error logging in restaurateur:", error);

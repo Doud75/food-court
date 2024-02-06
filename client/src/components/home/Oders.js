@@ -3,22 +3,21 @@ import { getFetch } from "../../utils/getFetch";
 import { Card, Button } from "@chakra-ui/react";
 
 export default function Orders() {
+  const userID = sessionStorage.getItem("ID");
+  console.log(userID);
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getFetch(
-          //fake data in progress
-          `/orders-client/1a6c23e7-4c5e-4a2d-b038-8a7f9f2e15a1`
-        );
+        const data = await getFetch(`/orders-client/${userID}`);
         setOrders(data);
       } catch (error) {
         console.error("Error fetching orders:", error);
       }
     };
     fetchData();
-  }, []);
+  }, [userID]);
   return (
     <div>
       <div className="flex m-9">

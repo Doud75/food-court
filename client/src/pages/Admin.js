@@ -13,7 +13,7 @@ export default function Admin() {
   const navigate = useNavigate();
 
   const handleAddRestaurantClick = () => {
-    navigate("/create-restaurant");
+    navigate("/admin/create-restaurant");
   };
 
   return (

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Input, Button } from "@chakra-ui/react";
 import { postFetch } from "../utils/postFetch";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Alert,
   AlertIcon,
@@ -11,7 +11,7 @@ import {
 
 export default function CreateMenu() {
   const navigate = useNavigate();
-  const { restaurantID } = useParams();
+  const restaurantID = sessionStorage.getItem("ID");
   const [menuData, setMenuData] = useState({
     dishes: "",
     price: "",
@@ -25,7 +25,7 @@ export default function CreateMenu() {
   };
   const handleCancel = () => {
     setMenuData({ dishes: "", price: "", restaurant_id: "" });
-    navigate(`/restaurants/${restaurantID}/menus/handler`);
+    navigate(`/home-restaurant`);
   };
 
   const handleAddMenuClick = async () => {
@@ -45,7 +45,7 @@ export default function CreateMenu() {
           setError(null);
         }, 5000);
       } else {
-        navigate(`/restaurants/${restaurantID}/menus/handler`);
+        navigate(`/home-restaurant`);
       }
     } catch (error) {
       console.log(error);

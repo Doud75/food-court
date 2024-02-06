@@ -28,8 +28,8 @@ export default function LoginCustomer() {
           ["ID", reponse.user_id],
           ["role", "user"],
         ]);
-        navigate("/home");
         console.log("Login successfully!");
+        window.location.href = "/home";
       }
     } catch (error) {
       console.error("Error login :", error);
