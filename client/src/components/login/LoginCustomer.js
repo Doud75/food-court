@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Input, InputRightElement, InputGroup, Button } from "@chakra-ui/react";
 import { postFetch } from "../../utils/postFetch";
+import { multiSetSessionStorage } from "../../utils/utilitaire";
 
 export default function LoginCustomer() {
   const [show, setShow] = useState(false);
@@ -18,8 +19,20 @@ export default function LoginCustomer() {
   const handleClick = () => setShow(!show);
   const handleLogin = async () => {
     try {
-      await postFetch("/login", loginData);
-      console.log("Login successfully!");
+      const reponse = await postFetch("/login", loginData);
+      if (reponse.token) {
+        await multiSetSessionStorage([
+          ["token", reponse.token],
+          ["ID", reponse.user_id],
+          ["role", reponse.role],
+        ]);
+        console.log("Login successfully!");
+        if (reponse.role === "admin") {
+          window.location.href = "/admin";
+        } else {
+          window.location.href = "/home";
+        }
+      }
     } catch (error) {
       console.error("Error login :", error);
     }
