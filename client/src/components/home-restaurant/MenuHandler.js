@@ -45,6 +45,11 @@ const MenuHandler = () => {
     setPopupModify(!popupModify);
     if (menu.id) {
       setSelectedMenu(menu);
+
+      setMenuModifyData({
+        dishes: menu.dishes,
+        price: menu.price,
+      });
     }
   }
 
@@ -67,6 +72,7 @@ const MenuHandler = () => {
 
   const modifyDishes = async (menuID) => {
     try {
+      console.log(menuModifyData)
       const response = await postFetch(
         `/restaurants/${restaurantID}/modify-dishes/${menuID}`,
         menuModifyData

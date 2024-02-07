@@ -10,10 +10,10 @@ type MenuItem struct {
 }
 
 type MenuItemWithRestaurant struct {
-	ID            uuid.UUID `json:"id"`
-	Dishes        string    `json:"dishes"`
-	Price         float64   `json:"price"`
-	RestaurantID  uuid.UUID `json:"restaurant_id"`
+	ID             uuid.UUID `json:"id"`
+	Dishes         string    `json:"dishes"`
+	Price          float32   `json:"price,string"`
+	RestaurantID   uuid.UUID `json:"restaurant_id"`
 	RestaurantName string    `json:"restaurant_name"`
 }
 
