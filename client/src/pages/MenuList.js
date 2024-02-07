@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { getFetch } from "../utils/getFetch";
-import { Card, CardBody, Text, Image, Button } from "@chakra-ui/react";
+import { Card, CardBody, Text, Button } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-import CardComponent from "../components/ui/CardComponent";
 import { useNavigate } from "react-router-dom";
 
 const MenuList = () => {
@@ -26,13 +25,23 @@ const MenuList = () => {
 
     fetchData();
   }, [restaurantID]);
-
   async function addDishiesToOrder(menu) {
-    const existingOrders = JSON.parse(localStorage.getItem("orders")) || [];
+    const existingOrders = JSON.parse(sessionStorage.getItem("orders")) || {};
+    const { dishes, id, price, restaurant_id } = menu;
 
-    existingOrders.push(menu);
+    if (existingOrders[id]) {
+      existingOrders[id].quantity += 1;
+    } else {
+      existingOrders[id] = {
+        dishes,
+        id,
+        price,
+        restaurant_id,
+        quantity: 1,
+      };
+    }
 
-    localStorage.setItem("orders", JSON.stringify(existingOrders));
+    sessionStorage.setItem("orders", JSON.stringify(existingOrders));
   }
 
   return (
@@ -59,11 +68,11 @@ const MenuList = () => {
           menus.map((menu) => (
             <Card key={menu.id} className="mb-5">
               <CardBody>
-                <Image
+                {/* <Image
                   src="https://source.unsplash.com/bol-de-salades-de-legumes-IGfIGP5ONV0"
                   alt="Green double couch with wooden legs"
                   borderRadius="lg"
-                />
+                /> */}
                 <Text className="flex justify-between py-2">
                   <span className="text-base font-semibold">{menu.dishes}</span>
                   <span className="text-base font-bold">{menu.price} €</span>
