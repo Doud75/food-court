@@ -1,11 +1,9 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Input, InputRightElement, InputGroup, Button } from "@chakra-ui/react";
 import { postFetch } from "../../utils/postFetch";
 import { multiSetSessionStorage } from "../../utils/utilitaire";
 
 export default function LoginRestaurateur() {
-  const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [loginData, setLoginData] = useState({
     name: "",
