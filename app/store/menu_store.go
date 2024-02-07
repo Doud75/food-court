@@ -18,10 +18,16 @@ type MenuStore struct {
 	*sql.DB
 }
 
-func (m *MenuStore) GetMenuByRestaurantID(restaurantID string) ([]facade.MenuItem, error) {
-	var menus []facade.MenuItem
+func (m *MenuStore) GetMenuByRestaurantID(restaurantID string) ([]facade.MenuItemWithRestaurant, error) {
+	var menusWithRestaurant []facade.MenuItemWithRestaurant
 
-	query := `SELECT id, dishes, price, restaurant_id FROM "menu" WHERE restaurant_id = $1`
+	query := `
+		SELECT m.id, m.dishes, m.price, m.restaurant_id, r.name
+		FROM "menu" m
+		JOIN "restaurant" r ON m.restaurant_id = r.id
+		WHERE m.restaurant_id = $1
+	`
+
 	rows, err := m.Query(query, restaurantID)
 	if err != nil {
 		fmt.Println(err)
@@ -30,12 +36,12 @@ func (m *MenuStore) GetMenuByRestaurantID(restaurantID string) ([]facade.MenuIte
 	defer rows.Close()
 
 	for rows.Next() {
-		var menu facade.MenuItem
-		if err = rows.Scan(&menu.ID, &menu.Dishes, &menu.Price, &menu.RestaurantID); err != nil {
+		var menuWithRestaurant facade.MenuItemWithRestaurant
+		if err = rows.Scan(&menuWithRestaurant.ID, &menuWithRestaurant.Dishes, &menuWithRestaurant.Price, &menuWithRestaurant.RestaurantID, &menuWithRestaurant.RestaurantName); err != nil {
 			fmt.Println(err)
 			return nil, err
 		}
-		menus = append(menus, menu)
+		menusWithRestaurant = append(menusWithRestaurant, menuWithRestaurant)
 	}
 
 	if err = rows.Err(); err != nil {
@@ -43,8 +49,9 @@ func (m *MenuStore) GetMenuByRestaurantID(restaurantID string) ([]facade.MenuIte
 		return nil, err
 	}
 
-	return menus, nil
+	return menusWithRestaurant, nil
 }
+
 
 func (m *MenuStore) RemoveDishesByID(restaurantID uuid.UUID, dishesID uuid.UUID) error {
 	var existingID uuid.NullUUID

@@ -6,6 +6,10 @@ export default function Orders() {
   const userID = sessionStorage.getItem("ID");
   const [orders, setOrders] = useState([]);
 
+  const ordersString = sessionStorage.getItem("orders");
+  const storedOrders = ordersString ? JSON.parse(ordersString) : {};
+  const ordersWaiting = Object.values(storedOrders);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -17,10 +21,71 @@ export default function Orders() {
     };
     fetchData();
   }, [userID]);
+
+  const groupOrdersByRestaurant = (orderList) => {
+    const groupedOrders = {};
+
+    orderList.forEach((order) => {
+      const { restaurant_id, price, quantity } = order;
+      const numericPrice = parseFloat(price);
+
+      if (!isNaN(numericPrice) && quantity && restaurant_id) {
+        if (groupedOrders[restaurant_id]) {
+          groupedOrders[restaurant_id].orders.push(order);
+          groupedOrders[restaurant_id].totalPrice += numericPrice * quantity;
+        } else {
+          groupedOrders[restaurant_id] = {
+            orders: [order],
+            totalPrice: numericPrice * quantity,
+          };
+        }
+      }
+    });
+
+    Object.values(groupedOrders).forEach((group) => {
+      if (typeof group.totalPrice !== "number") {
+        group.totalPrice = 0;
+      }
+    });
+    return groupedOrders;
+  };
+
+  const groupedOrders = groupOrdersByRestaurant([...orders, ...ordersWaiting]);
+
   return (
     <div>
       <div className="flex m-9">
         <span className="text-lg">Basket</span>
+      </div>
+      <div className="m-8">
+        {Object.keys(groupedOrders).map((restaurantId) => (
+          <Card key={restaurantId} className="my-4 p-4">
+            <h2 className="text-lg">
+              {groupedOrders[restaurantId].orders[0].restaurant_name}
+            </h2>
+            <div className="my-4">
+              {groupedOrders[restaurantId].orders.map((order) => (
+                <div key={order.id} className="flex justify-between">
+                  <p className="text-sm">
+                    {order.dishes} {order.quantity}
+                  </p>
+                  <p>{order.price}</p>
+                </div>
+              ))}
+            </div>
+            <div className="flex justify-between pt-4">
+              <p className="text-base">Total </p>
+              <p className="text-lg">
+                {groupedOrders[restaurantId].totalPrice.toFixed(2)}
+              </p>
+            </div>
+            <div className="flex my-3 ">
+              <Button variant="solid" colorScheme="teal" size="sm" width="100%">
+                Order
+              </Button>
+            </div>
+          </Card>
+        ))}
       </div>
       <div className="m-8">
         {orders && orders.length > 0 ? (

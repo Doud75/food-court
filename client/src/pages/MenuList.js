@@ -27,8 +27,7 @@ const MenuList = () => {
   }, [restaurantID]);
   async function addDishiesToOrder(menu) {
     const existingOrders = JSON.parse(sessionStorage.getItem("orders")) || {};
-    const { dishes, id, price, restaurant_id } = menu;
-
+    const { dishes, id, price, restaurant_id, restaurant_name } = menu;
     if (existingOrders[id]) {
       existingOrders[id].quantity += 1;
     } else {
@@ -37,6 +36,7 @@ const MenuList = () => {
         id,
         price,
         restaurant_id,
+        restaurant_name,
         quantity: 1,
       };
     }
