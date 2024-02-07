@@ -30,4 +30,5 @@ type OrderStoreInterface interface {
 	GetOrdersByUser(uuid.UUID) ([]OrderItemWithRestaurant, error)
 	GetPendingOrdersByRestaurant(uuid.UUID) ([]OrderItem, error)
 	UpdateOrderToDone(uuid.UUID, uuid.UUID) error
+	AddOrder(userID, restaurantID uuid.UUID, dishesList json.RawMessage, totalPrice float64) (uuid.UUID, error)
 }

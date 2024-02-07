@@ -120,3 +120,57 @@ func (o *OrderStore) UpdateOrderToDone(restaurantID uuid.UUID, orderID uuid.UUID
 
 	return nil
 }
+
+func (o *OrderStore) AddOrder(userID, restaurantID uuid.UUID, dishesList json.RawMessage, totalPrice float64) (uuid.UUID, error) {
+	orderID := uuid.New()
+
+	query := `
+		INSERT INTO "order" ("id", "dishes_list", "total_price", "reference", "state", "user_id", "restaurant_id")
+		VALUES ($1, $2, $3, $4, $5, $6, $7)
+	`
+
+	reference, err := generateOrderReference(o.DB) // Passez la connexion à la base de données
+	if err != nil {
+		return uuid.UUID{}, fmt.Errorf("error generating order reference: %v", err)
+	}
+
+	_, err = o.Exec(query, orderID, dishesList, totalPrice, reference, "pending", userID, restaurantID)
+	if err != nil {
+		return uuid.UUID{}, fmt.Errorf("error adding order: %v", err)
+	}
+
+	return orderID, nil
+}
+
+
+
+var orderCounter int64 = 0
+
+func generateOrderReference(db *sql.DB) (string, error) {
+	reference := fmt.Sprintf("%03d", orderCounter)
+
+	exists, err := isReferenceExists(db, reference)
+	if err != nil {
+		return "", err
+	}
+
+	for exists {
+		orderCounter++
+		reference = fmt.Sprintf("%03d", orderCounter)
+		exists, err = isReferenceExists(db, reference)
+		if err != nil {
+			return "", err
+		}
+	}
+
+	return reference, nil
+}
+
+func isReferenceExists(db *sql.DB, reference string) (bool, error) {
+	var count int
+	err := db.QueryRow("SELECT COUNT(*) FROM \"order\" WHERE reference = $1", reference).Scan(&count)
+	if err != nil {
+		return false, err
+	}
+	return count > 0, nil
+}

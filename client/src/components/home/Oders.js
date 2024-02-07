@@ -1,14 +1,46 @@
 import { useState, useEffect } from "react";
 import { getFetch } from "../../utils/getFetch";
+import { postFetch } from "../../utils/postFetch";
 import { Card, Button } from "@chakra-ui/react";
 
 export default function Orders() {
   const userID = sessionStorage.getItem("ID");
   const [orders, setOrders] = useState([]);
+  const [isOrderPending, setOrderPending] = useState(false);
 
   const ordersString = sessionStorage.getItem("orders");
   const storedOrders = ordersString ? JSON.parse(ordersString) : {};
   const ordersWaiting = Object.values(storedOrders);
+
+  const handleAddOrderClick = async (restaurantId) => {
+    const restaurantOrders = groupedOrders[restaurantId].orders;
+
+    const orderDetails = {
+      user_id: userID,
+      restaurant_id: restaurantId,
+      dishes_list: restaurantOrders.reduce((dishesList, order) => {
+        dishesList[order.dishes] = order.quantity;
+        return dishesList;
+      }, {}),
+      total_price: parseFloat(
+        groupedOrders[restaurantId].totalPrice.toFixed(2)
+      ),
+    };
+
+    try {
+      const response = await postFetch("/insert-order", orderDetails);
+      console.log("Order added successfully", response);
+      const updatedOrders = Object.fromEntries(
+        Object.entries(storedOrders).filter(
+          ([key, value]) => !restaurantOrders.find((order) => order.id === key)
+        )
+      );
+      sessionStorage.setItem("orders", JSON.stringify(updatedOrders));
+      setOrderPending(true);
+    } catch (error) {
+      console.error("Error adding order:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -80,8 +112,15 @@ export default function Orders() {
               </p>
             </div>
             <div className="flex my-3 ">
-              <Button variant="solid" colorScheme="teal" size="sm" width="100%">
-                Order
+              <Button
+                variant="solid"
+                colorScheme="teal"
+                size="sm"
+                width="100%"
+                onClick={() => handleAddOrderClick(restaurantId)}
+                isDisabled={isOrderPending}
+              >
+                {isOrderPending ? "Pending" : "Order"}
               </Button>
             </div>
           </Card>
