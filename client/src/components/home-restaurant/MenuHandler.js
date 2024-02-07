@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import { getFetch } from "../utils/getFetch";
+import { getFetch } from "../../utils/getFetch";
 import { Card, CardBody, Text, Button, Flex, Input } from "@chakra-ui/react";
-import { useParams, useNavigate } from "react-router-dom";
-import { deleteFetch } from "../utils/deleteFetch";
-import { postFetch } from "../utils/postFetch";
+import { useNavigate } from "react-router-dom";
+import { deleteFetch } from "../../utils/deleteFetch";
+import { postFetch } from "../../utils/postFetch";
 
-const MenuList = () => {
-  const { restaurantID } = useParams();
+const MenuHandler = () => {
+  const restaurantID = sessionStorage.getItem("ID");
   const [menus, setMenus] = useState([]);
   const [popupDelete, setPopupDelete] = useState(false);
   const [popupModify, setPopupModify] = useState(false);
@@ -18,7 +18,7 @@ const MenuList = () => {
   const navigate = useNavigate();
 
   const handleAddMenuClick = () => {
-    navigate(`/restaurants/${restaurantID}/menus/handler/create-menu`);
+    navigate(`/home-restaurant/create-menu`);
   };
 
   useEffect(() => {
@@ -91,24 +91,6 @@ const MenuList = () => {
 
   return (
     <>
-      <nav className="p-6">
-        <Button colorScheme="teal" size="sm">
-          <a href="/restaurants">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              className="feather feather-arrow-left"
-            >
-              <line x1="19" y1="12" x2="5" y2="12"></line>
-              <polyline points="12 19 5 12 12 5"></polyline>
-            </svg>
-          </a>
-        </Button>
-      </nav>
       <div className="p-8">
         {menus && menus.length > 0 ? (
           menus.map((menu) => (
@@ -215,4 +197,4 @@ const MenuList = () => {
   );
 };
 
-export default MenuList;
+export default MenuHandler;
