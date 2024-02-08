@@ -1,5 +1,7 @@
 package controller
 
+import "net/http"
+
 import (
 	// "food_court/helper"
 	"food_court/store"
@@ -10,6 +12,13 @@ import (
 	"github.com/go-chi/chi/middleware"
 	"github.com/rs/cors"
 )
+
+handler.Post("/upload-image", handler.UploadImage())
+
+func (h *Handler) UploadImage() http.HandlerFunc {
+    return func(w http.ResponseWriter, r *http.Request) {
+    }
+}
 
 func NewHandler(store *store.Store) *Handler {
 	handler := &Handler{

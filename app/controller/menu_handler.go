@@ -3,9 +3,10 @@ package controller
 import (
 	"encoding/json"
 	"food_court/facade"
+	"net/http"
+
 	"github.com/go-chi/chi"
 	"github.com/google/uuid"
-	"net/http"
 )
 
 func (h *Handler) GetMenuByRestaurantID() http.HandlerFunc {
@@ -94,6 +95,21 @@ func (h *Handler) AddMenu() http.HandlerFunc {
 			http.Error(writer, "Invalid request body", http.StatusBadRequest)
 			return
 		}
+
+		file, _, err := request.FormFile("image")
+		if err != nil {
+			http.Error(writer, "Image not provided", http.StatusBadRequest)
+			return
+		}
+		defer file.Close()
+
+		imagePath, err := SaveImage(file)
+		if err != nil {
+			http.Error(writer, "Failed to save image", http.StatusInternalServerError)
+			return
+		}
+
+		menu.ImagePath = imagePath
 
 		menuID, err := h.Store.AddMenu(menu)
 		if err != nil {

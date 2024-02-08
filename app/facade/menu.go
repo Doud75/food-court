@@ -7,6 +7,7 @@ type MenuItem struct {
 	Dishes       string        `json:"dishes"`
 	Price        float32       `json:"price,string"`
 	RestaurantID uuid.NullUUID `json:"restaurant_id"`
+	ImagePath    string        `json:"image_path"`
 }
 
 type MenuItemWithRestaurant struct {

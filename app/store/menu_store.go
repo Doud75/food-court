@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"food_court/facade"
+
 	"github.com/google/uuid"
 )
 
@@ -52,7 +53,6 @@ func (m *MenuStore) GetMenuByRestaurantID(restaurantID string) ([]facade.MenuIte
 	return menusWithRestaurant, nil
 }
 
-
 func (m *MenuStore) RemoveDishesByID(restaurantID uuid.UUID, dishesID uuid.UUID) error {
 	var existingID uuid.NullUUID
 	if err := m.QueryRow(`SELECT id FROM "menu" WHERE restaurant_id = $1 AND id = $2`, restaurantID, dishesID).
@@ -93,7 +93,8 @@ func (m *MenuStore) ModifyDishes(restaurantID uuid.UUID, dishesID uuid.UUID, men
 	return nil
 }
 
-func (m *MenuStore) AddMenu(menu facade.MenuItem) (uuid.UUID, error) {
+func (m *MenuStore) AddMenu(menu facade.MenuItem, imagePath string) (uuid.UUID, error) {
+
 	var existingMenuID uuid.UUID
 	err := m.QueryRow(`SELECT id FROM "menu" WHERE dishes = $1 AND restaurant_id = $2`, menu.Dishes, menu.RestaurantID).
 		Scan(&existingMenuID)
@@ -107,12 +108,12 @@ func (m *MenuStore) AddMenu(menu facade.MenuItem) (uuid.UUID, error) {
 	menuID := uuid.New()
 
 	query := `
-		INSERT INTO "menu" (id, dishes, price, restaurant_id)
+		INSERT INTO "menu" (id, dishes, price, restaurant_id, image_path)
 		VALUES ($1, $2, $3, $4)
 		RETURNING id
 	`
 
-	err = m.QueryRow(query, menuID, menu.Dishes, menu.Price, menu.RestaurantID).
+	err = m.QueryRow(query, menuID, menu.Dishes, menu.Price, menu.RestaurantID, imagePath).
 		Scan(&menuID)
 	if err != nil {
 		fmt.Println(err)
