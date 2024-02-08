@@ -17,6 +17,7 @@ export default function CreateRestaurant() {
     name: "",
     category: "",
     password: "",
+    image: null,
   });
   const [error, setError] = useState(null);
 
@@ -26,8 +27,14 @@ export default function CreateRestaurant() {
     const { name, value } = e.target;
     setRestaurantData((prevData) => ({ ...prevData, [name]: value }));
   };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setRestaurantData((prevData) => ({ ...prevData, image: file }));
+  };
+
   const handleCancel = () => {
-    setRestaurantData({ name: "", category: "", password: "" });
+    setRestaurantData({ name: "", category: "", password: "", image: null });
     navigate("/admin");
   };
 
@@ -35,7 +42,8 @@ export default function CreateRestaurant() {
     if (
       !restaurantData.name ||
       !restaurantData.category ||
-      !restaurantData.password
+      !restaurantData.password ||
+      !restaurantData.image
     ) {
       setError("Please fill out all the fields");
       setTimeout(() => {
@@ -45,7 +53,13 @@ export default function CreateRestaurant() {
     }
 
     try {
-      const reponse = await postFetch("/insert-restaurant", restaurantData);
+      const formData = new FormData();
+      formData.append("name", restaurantData.name);
+      formData.append("category", restaurantData.category);
+      formData.append("password", restaurantData.password);
+      formData.append("image", restaurantData.image);
+
+      const reponse = await postFetch("/insert-restaurant", formData);
       if (reponse === 409) {
         setError("The name restaurant already exist");
         setTimeout(() => {
@@ -100,7 +114,17 @@ export default function CreateRestaurant() {
             </InputRightElement>
           </InputGroup>
         </div>
+        <div>
+          <span>Image</span>
+          <input
+            className="flex items-center"
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+          />
+        </div>
       </div>
+
       <div className="flex justify-between mt-12">
         <Button
           variant="solid"
