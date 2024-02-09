@@ -4,6 +4,9 @@ import (
 	"encoding/json"
 	"food_court/ws"
 	"net/http"
+
+	"github.com/go-chi/chi"
+	"github.com/gorilla/websocket"
 )
 
 type WebsocketHandler struct {
@@ -23,12 +26,7 @@ func NewWebsocketHandler(h *ws.Hub) *WebsocketHandler {
 func (h *WebsocketHandler) CreateNotificationRoom() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("Content-Type", "application/json")
-		var req CreateNotificationRoomRequest
-
-		if err := json.NewDecoder(request.Body).Decode(&req); err != nil {
-			http.Error(writer, err.Error(), http.StatusBadRequest)
-			return
-		}
+		req := CreateNotificationRoomRequest{ID: chi.URLParam(request, "id")}
 
 		h.hub.Rooms[req.ID] = &ws.NotificationRoom{
 			ID:      req.ID,
@@ -38,6 +36,32 @@ func (h *WebsocketHandler) CreateNotificationRoom() http.HandlerFunc {
 		if err := json.NewEncoder(writer).Encode(req); err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return
+		}
+	}
+}
+
+var upgrader = websocket.Upgrader{
+	ReadBufferSize: 1024,
+	WriteBufferSize: 1024,
+	CheckOrigin: func(r *http.Request) bool {
+		return true //TODO: changer pour le lien du client apres les tests
+	},
+}
+
+func (h *WebsocketHandler) JoinNotificationRoom() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		conn, err := upgrader.Upgrade(writer, request, nil)
+
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		roomID := chi.URLParam(request, "id")
+
+		client := &ws.Client{
+			Conn: conn,
+			
 		}
 	}
 }

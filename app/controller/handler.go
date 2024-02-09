@@ -41,13 +41,13 @@ func NewHandler(store *store.Store) *Handler {
 	/*User*/
 	handler.Get("/", handler.ShowUser())
 	handler.Post("/login", handler.Login())
-	handler.Post("/ws/user/{userID}", wsHandler.CreateNotificationRoom())
+	handler.Post("/ws/user/{id}", wsHandler.CreateNotificationRoom())
 	/*Restaurant*/
 	handler.Post("/login-restaurant", handler.LoginRestaurateur())
 	handler.Get("/restaurants", handler.GetRestaurant())
 	handler.Post("/insert-restaurant", handler.CreateRestaurant())
 	handler.Delete("/delete-restaurant", handler.DeleteRestaurant())
-	handler.Post("/ws/restaurant/{restaurantID}", wsHandler.CreateNotificationRoom())
+	handler.Post("/ws/restaurant/{id}", wsHandler.CreateNotificationRoom())
 	/*Menu*/
 	handler.Get("/restaurants/{restaurantID}/menus", handler.GetMenuByRestaurantID())
 	handler.Delete("/restaurants/{restaurantID}/delete-dishes/{dishesID}", handler.RemoveDishesByID())
