@@ -2,6 +2,7 @@ package controller
 
 import (
 	"food_court/helper"
+	"food_court/ws"
 	"strings"
 
 	// "food_court/helper"
@@ -22,6 +23,9 @@ func NewHandler(store *store.Store) *Handler {
 		store,
 	}
 
+	hub := ws.NewHub()
+	wsHandler := NewWebsocketHandler(hub)
+
 	// Set up CORS middleware
 	corsOptions := cors.New(cors.Options{
 		AllowedOrigins:   []string{"http://localhost:3000"},
@@ -37,11 +41,13 @@ func NewHandler(store *store.Store) *Handler {
 	/*User*/
 	handler.Get("/", handler.ShowUser())
 	handler.Post("/login", handler.Login())
+	handler.Post("/ws/user/{userID}", wsHandler.CreateNotificationRoom())
 	/*Restaurant*/
 	handler.Post("/login-restaurant", handler.LoginRestaurateur())
 	handler.Get("/restaurants", handler.GetRestaurant())
 	handler.Post("/insert-restaurant", handler.CreateRestaurant())
 	handler.Delete("/delete-restaurant", handler.DeleteRestaurant())
+	handler.Post("/ws/restaurant/{restaurantID}", wsHandler.CreateNotificationRoom())
 	/*Menu*/
 	handler.Get("/restaurants/{restaurantID}/menus", handler.GetMenuByRestaurantID())
 	handler.Delete("/restaurants/{restaurantID}/delete-dishes/{dishesID}", handler.RemoveDishesByID())

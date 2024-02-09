@@ -5,9 +5,10 @@ import (
 	"fmt"
 	"food_court/controller"
 	"food_court/store"
-	_ "github.com/lib/pq"
 	"log"
 	"net/http"
+
+	_ "github.com/lib/pq"
 )
 
 func main() {
