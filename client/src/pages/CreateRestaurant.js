@@ -17,7 +17,7 @@ export default function CreateRestaurant() {
     name: "",
     category: "",
     password: "",
-    image: null, 
+    image: null,
   });
   const [error, setError] = useState(null);
 
@@ -31,6 +31,7 @@ export default function CreateRestaurant() {
   const handleImageChange = (e) => {
     const imageFile = e.target.files[0];
     setRestaurantData((prevData) => ({ ...prevData, image: imageFile }));
+    console.log(e.target.files[0])
   };
 
   const handleCancel = () => {
@@ -59,6 +60,8 @@ export default function CreateRestaurant() {
       formData.append("password", restaurantData.password);
       formData.append("image", restaurantData.image);
 
+      console.log(formData); // FormData {}
+
       const response = await postFetch("/insert-restaurant", formData);
       if (response === 409) {
         setError("The restaurant name already exists");
@@ -72,6 +75,8 @@ export default function CreateRestaurant() {
       console.log(error);
     }
   };
+
+  console.log(restaurantData); // {name: 'Restaurant4', category: 'Italian', password: 'pass', image: File}
 
   return (
     <div className="flex flex-col m-6 mt-12">
@@ -116,11 +121,7 @@ export default function CreateRestaurant() {
         </div>
         <div>
           <span>Image</span>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-          />
+          <input type="file" accept="image/*" onChange={handleImageChange} />
         </div>
       </div>
       <div className="flex justify-between mt-12">
