@@ -2,9 +2,10 @@ package store
 
 import (
 	"database/sql"
-	"fmt"
 	"errors"
+	"fmt"
 	"food_court/facade"
+
 	"github.com/google/uuid"
 )
 
@@ -19,25 +20,24 @@ type RestaurantStore struct {
 }
 
 func (r *RestaurantStore) GetRestaurantByName(name string) (facade.RestaurantItem, error) {
-    var restaurant facade.RestaurantItem 
+	var restaurant facade.RestaurantItem
 
-    if err := r.QueryRow(
+	if err := r.QueryRow(
 		`SELECT id, name, password FROM "restaurant" WHERE name = $1`, name,
 	).Scan(&restaurant.ID, &restaurant.Name, &restaurant.Password); err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return facade.RestaurantItem{}, fmt.Errorf("unknow name : %v", name)
+			return facade.RestaurantItem{}, fmt.Errorf("unknown name : %v", name)
 		}
 		return facade.RestaurantItem{}, fmt.Errorf("error : %v", err)
 	}
 
-    return restaurant, nil 
+	return restaurant, nil
 }
-
 
 func (r *RestaurantStore) GetRestaurant() ([]facade.RestaurantItem, error) {
 	var restaurants []facade.RestaurantItem
 
-	rows, err := r.Query(`SELECT id, name, category, description FROM "restaurant"`)
+	rows, err := r.Query(`SELECT id, name, category, description, image FROM "restaurant"`)
 	if err != nil {
 		fmt.Println(err)
 		return []facade.RestaurantItem{}, err
@@ -47,7 +47,7 @@ func (r *RestaurantStore) GetRestaurant() ([]facade.RestaurantItem, error) {
 
 	for rows.Next() {
 		var restaurant facade.RestaurantItem
-		if err = rows.Scan(&restaurant.ID, &restaurant.Name, &restaurant.Category, &restaurant.Description); err != nil {
+		if err = rows.Scan(&restaurant.ID, &restaurant.Name, &restaurant.Category, &restaurant.Description, &restaurant.Image); err != nil {
 			fmt.Println(err)
 			return []facade.RestaurantItem{}, err
 		}
@@ -66,7 +66,7 @@ func (r *RestaurantStore) CreateRestaurant(newRestaurant facade.RestaurantItem) 
 	var existingID uuid.UUID
 	err := r.QueryRow(`SELECT id FROM "restaurant" WHERE name = $1`, newRestaurant.Name).Scan(&existingID)
 	if err == nil {
-		return uuid.Nil, fmt.Errorf("The name restaurant '%s' already exist", newRestaurant.Name)
+		return uuid.Nil, fmt.Errorf("The restaurant name '%s' already exists", newRestaurant.Name)
 	} else if err != sql.ErrNoRows {
 		fmt.Println(err)
 		return uuid.Nil, err
@@ -75,9 +75,9 @@ func (r *RestaurantStore) CreateRestaurant(newRestaurant facade.RestaurantItem) 
 	restaurantID := uuid.New()
 
 	_, err = r.Exec(`
-        INSERT INTO "restaurant" ("id", "password", "name", "category", "description")
-        VALUES ($1, $2, $3, $4, $5)`,
-		restaurantID, newRestaurant.Password, newRestaurant.Name, newRestaurant.Category, newRestaurant.Description)
+        INSERT INTO "restaurant" ("id", "password", "name", "category", "description", "image")
+        VALUES ($1, $2, $3, $4, $5, $6)`,
+		restaurantID, newRestaurant.Password, newRestaurant.Name, newRestaurant.Category, newRestaurant.Description, newRestaurant.Image)
 
 	if err != nil {
 		fmt.Println(err)
@@ -91,7 +91,7 @@ func (r *RestaurantStore) DeleteRestaurant(restaurantID uuid.UUID) error {
 	var existingID uuid.UUID
 	err := r.QueryRow(`SELECT id FROM "restaurant" WHERE id = $1`, restaurantID).Scan(&existingID)
 	if err == sql.ErrNoRows {
-		return fmt.Errorf("The ID '%s' of the restaurant doesn't exist", restaurantID)
+		return fmt.Errorf("The restaurant ID '%s' does not exist", restaurantID)
 	} else if err != nil {
 		fmt.Println(err)
 		return err

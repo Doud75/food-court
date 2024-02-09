@@ -17,6 +17,7 @@ export default function CreateRestaurant() {
     name: "",
     category: "",
     password: "",
+    image: null, 
   });
   const [error, setError] = useState(null);
 
@@ -26,8 +27,14 @@ export default function CreateRestaurant() {
     const { name, value } = e.target;
     setRestaurantData((prevData) => ({ ...prevData, [name]: value }));
   };
+
+  const handleImageChange = (e) => {
+    const imageFile = e.target.files[0];
+    setRestaurantData((prevData) => ({ ...prevData, image: imageFile }));
+  };
+
   const handleCancel = () => {
-    setRestaurantData({ name: "", category: "", password: "" });
+    setRestaurantData({ name: "", category: "", password: "", image: null });
     navigate("/admin");
   };
 
@@ -35,7 +42,8 @@ export default function CreateRestaurant() {
     if (
       !restaurantData.name ||
       !restaurantData.category ||
-      !restaurantData.password
+      !restaurantData.password ||
+      !restaurantData.image
     ) {
       setError("Please fill out all the fields");
       setTimeout(() => {
@@ -45,9 +53,15 @@ export default function CreateRestaurant() {
     }
 
     try {
-      const reponse = await postFetch("/insert-restaurant", restaurantData);
-      if (reponse === 409) {
-        setError("The name restaurant already exist");
+      const formData = new FormData();
+      formData.append("name", restaurantData.name);
+      formData.append("category", restaurantData.category);
+      formData.append("password", restaurantData.password);
+      formData.append("image", restaurantData.image);
+
+      const response = await postFetch("/insert-restaurant", formData);
+      if (response === 409) {
+        setError("The restaurant name already exists");
         setTimeout(() => {
           setError(null);
         }, 5000);
@@ -99,6 +113,14 @@ export default function CreateRestaurant() {
               </Button>
             </InputRightElement>
           </InputGroup>
+        </div>
+        <div>
+          <span>Image</span>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+          />
         </div>
       </div>
       <div className="flex justify-between mt-12">
