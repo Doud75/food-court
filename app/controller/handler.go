@@ -25,6 +25,7 @@ func NewHandler(store *store.Store) *Handler {
 
 	hub := ws.NewHub()
 	wsHandler := NewWebsocketHandler(hub)
+	go hub.Run()
 
 	// Set up CORS middleware
 	corsOptions := cors.New(cors.Options{

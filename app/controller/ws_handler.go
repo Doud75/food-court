@@ -44,11 +44,19 @@ var upgrader = websocket.Upgrader{
 	ReadBufferSize: 1024,
 	WriteBufferSize: 1024,
 	CheckOrigin: func(r *http.Request) bool {
-		return true //TODO: changer pour le lien du client apres les tests
+		return true // TODO: changer pour le lien du client apres les tests
 	},
 }
 
+type NotificationRequest struct {
+	SenderID string `json:"sender_id"`
+	SenderName string `json:"sender_name"`
+	OrderID string `json:"order_id"`
+	MessageContent string `json:"message_content"`
+}
+
 func (h *WebsocketHandler) JoinNotificationRoom() http.HandlerFunc {
+	var notificationReq NotificationRequest
 	return func(writer http.ResponseWriter, request *http.Request) {
 		conn, err := upgrader.Upgrade(writer, request, nil)
 
@@ -57,11 +65,30 @@ func (h *WebsocketHandler) JoinNotificationRoom() http.HandlerFunc {
 			return
 		}
 
+		if err := json.NewDecoder(request.Body).Decode(&notificationReq); err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
 		roomID := chi.URLParam(request, "id")
 
 		client := &ws.Client{
 			Conn: conn,
-			
+			Message: make(chan *ws.Message, 10),
+			ID: notificationReq.SenderID,
+			SenderName: notificationReq.SenderName,
+			RoomID: roomID,
 		}
+
+		message := &ws.Message{
+			Content: notificationReq.SenderName,
+			RoomID: roomID,
+		}
+
+		h.hub.Register <- client
+		h.hub.Broadcast <- message
+
+		go client.WriteMessage()
+		client.ReadMessage(h.hub)
 	}
 }
