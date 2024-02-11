@@ -37,18 +37,20 @@ func NewHandler(store *store.Store) *Handler {
 
 	handler.Use(corsOptions.Handler)
 	handler.Use(middleware.Logger)
-	handler.Use(TokenMiddleware)
+	//handler.Use(TokenMiddleware)
 
 	/*User*/
 	handler.Get("/", handler.ShowUser())
 	handler.Post("/login", handler.Login())
-	handler.Post("/ws/user/{id}", wsHandler.CreateNotificationRoom())
+	handler.Post("/ws/user/create/{id}", wsHandler.CreateNotificationRoom())
+	handler.Get("/ws/user/join/{id}", wsHandler.JoinNotificationRoom())
 	/*Restaurant*/
 	handler.Post("/login-restaurant", handler.LoginRestaurateur())
 	handler.Get("/restaurants", handler.GetRestaurant())
 	handler.Post("/insert-restaurant", handler.CreateRestaurant())
 	handler.Delete("/delete-restaurant", handler.DeleteRestaurant())
-	handler.Post("/ws/restaurant/{id}", wsHandler.CreateNotificationRoom())
+	handler.Post("/ws/restaurant/create/{id}", wsHandler.CreateNotificationRoom())
+	handler.Get("/ws/restaurant/join/{id}", wsHandler.JoinNotificationRoom())
 	/*Menu*/
 	handler.Get("/restaurants/{restaurantID}/menus", handler.GetMenuByRestaurantID())
 	handler.Delete("/restaurants/{restaurantID}/delete-dishes/{dishesID}", handler.RemoveDishesByID())

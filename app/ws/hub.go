@@ -28,19 +28,19 @@ func (h *Hub) Run() {
 			if _, ok := h.Rooms[client.RoomID]; ok {
 				room := h.Rooms[client.RoomID]
 
-				if _, ok := room.Clients[client.ID], !ok {
+				if _, ok := room.Clients[client.ID]; !ok {
 					room.Clients[client.ID] = client
 				}
 			}
 		case client := <-h.Unregister:
 			if _, ok := h.Rooms[client.RoomID]; ok {
 				if _, ok := h.Rooms[client.RoomID].Clients[client.ID]; ok {
-					delete(h.Rooms[client.RoomID].Clients)
+					delete(h.Rooms[client.RoomID].Clients, client.ID)
 					close(client.Message)
 				}
 			}
 		case message := <-h.Broadcast:
-			if _, ok := h.Rooms[client.RoomID]; ok {
+			if _, ok := h.Rooms[message.RoomID]; ok {
 				for _, client := range h.Rooms[message.RoomID].Clients {
 					client.Message <- message
 				}
