@@ -9,6 +9,7 @@ export default function LoginCustomer() {
     email: "",
     password: "",
   });
+  const [response, setResponse] = useState({})
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -18,18 +19,19 @@ export default function LoginCustomer() {
 
   const handleClick = () => setShow(!show);
   const handleLogin = async () => {
+    setResponse(await postFetch("/login", loginData));
     try {
-      const reponse = await postFetch("/login", loginData);
-      if (reponse.token) {
+      if (response.token) {
         await multiSetSessionStorage([
-          ["token", reponse.token],
-          ["ID", reponse.user_id],
-          ["role", reponse.role],
+          ["token", response.token],
+          ["ID", response.user_id],
+          ["role", response.role],
         ]);
-        console.log("Login successfully!");
-        if (reponse.role === "admin") {
+
+        if (response.role === "admin") {
           window.location.href = "/admin";
         } else {
+          await postFetch("/ws/create/user/" + sessionStorage.ID)
           window.location.href = "/home";
         }
       }

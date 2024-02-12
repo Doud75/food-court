@@ -7,8 +7,9 @@ import CreateRestaurant from "./pages/CreateRestaurant";
 import CreateMenu from "./pages/CreateMenu.js";
 import Home from "./pages/Home.js";
 import HomeRestaurant from "./pages/HomeRestaurant.js";
-
+import NotificationLayout from "./layouts/NotificationLayout.js";
 import "./index.css";
+
 function App() {
   const isAuthenticated =
     !!sessionStorage.getItem("token") &&
@@ -23,55 +24,57 @@ function App() {
     return element;
   };
   return (
-    <div className="App">
-      <ChakraProvider>
-        <BrowserRouter>
-          {isAuthenticated ? (
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route
-                path="/*"
-                element={
-                  isAuthenticated ? (
-                    sessionStorage.getItem("role") === "admin" ? (
-                      <Admin />
-                    ) : sessionStorage.getItem("role") === "restaurant" ? (
-                      <HomeRestaurant />
-                    ) : (
-                      <Home />
-                    )
-                  ) : (
-                    <Login />
-                  )
-                }
-              />
-              <Route path="/home" element={requireRole("customer", <Home />)} />
-              <Route
-                path="/home-restaurant"
-                element={requireRole("restaurant", <HomeRestaurant />)}
-              />
-              <Route
-                path="/restaurants/:restaurantID/menus"
-                element={requireRole("customer", <MenuList />)}
-              />
-              <Route
-                path="/home-restaurant/create-menu"
-                element={requireRole("restaurant", <CreateMenu />)}
-              />
-              <Route path="/admin" element={requireRole("admin", <Admin />)} />
-              <Route
-                path="/admin/create-restaurant"
-                element={requireRole("admin", <CreateRestaurant />)}
-              />
-            </Routes>
-          ) : (
-            <Routes>
-              <Route path="/*" element={<Login />} />
-            </Routes>
-          )}
-        </BrowserRouter>
-      </ChakraProvider>
-    </div>
+      <div className="App">
+       <NotificationLayout>
+          <ChakraProvider>
+            <BrowserRouter>
+              {isAuthenticated ? (
+                <Routes>
+                  <Route path="/login" element={<Login />} />
+                  <Route
+                    path="/*"
+                    element={
+                      isAuthenticated ? (
+                        sessionStorage.getItem("role") === "admin" ? (
+                          <Admin />
+                        ) : sessionStorage.getItem("role") === "restaurant" ? (
+                          <HomeRestaurant />
+                        ) : (
+                          <Home />
+                        )
+                      ) : (
+                        <Login />
+                      )
+                    }
+                  />
+                  <Route path="/home" element={requireRole("customer", <Home />)} />
+                  <Route
+                    path="/home-restaurant"
+                    element={requireRole("restaurant", <HomeRestaurant />)}
+                  />
+                  <Route
+                    path="/restaurants/:restaurantID/menus"
+                    element={requireRole("customer", <MenuList />)}
+                  />
+                  <Route
+                    path="/home-restaurant/create-menu"
+                    element={requireRole("restaurant", <CreateMenu />)}
+                  />
+                  <Route path="/admin" element={requireRole("admin", <Admin />)} />
+                  <Route
+                    path="/admin/create-restaurant"
+                    element={requireRole("admin", <CreateRestaurant />)}
+                  />
+                </Routes>
+              ) : (
+                <Routes>
+                  <Route path="/*" element={<Login />} />
+                </Routes>
+              )}
+            </BrowserRouter>
+          </ChakraProvider>
+        </NotificationLayout>
+      </div>
   );
 }
 

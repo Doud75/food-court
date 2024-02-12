@@ -49,24 +49,11 @@ var upgrader = websocket.Upgrader{
 	},
 }
 
-type NotificationRequest struct {
-	SenderID string `json:"sender_id"`
-	SenderName string `json:"sender_name"`
-	OrderID string `json:"order_id"`
-	MessageContent string `json:"message_content"`
-}
-
 func (h *WebsocketHandler) JoinNotificationRoom() http.HandlerFunc {
-	var notificationReq NotificationRequest
 	return func(writer http.ResponseWriter, request *http.Request) {
 		conn, err := upgrader.Upgrade(writer, request, nil)
 
 		if err != nil {
-			http.Error(writer, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		if err := json.NewDecoder(request.Body).Decode(&notificationReq); err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -76,13 +63,11 @@ func (h *WebsocketHandler) JoinNotificationRoom() http.HandlerFunc {
 		client := &ws.Client{
 			Conn: conn,
 			Message: make(chan *ws.Message, 10),
-			ID: notificationReq.SenderID,
-			SenderName: notificationReq.SenderName,
 			RoomID: roomID,
 		}
 
 		message := &ws.Message{
-			Content: notificationReq.SenderName,
+			Content: "A new user has joined the room",
 			RoomID: roomID,
 		}
 
